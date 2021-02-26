@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>Admin creation page</h1>
+<div>
+		<p>Add the product</p>
+		<form action="#" th:action="@{/AddProduct}" method="POST" enctype="multipart/form-data">
+			<fieldset>
+				<p>
+					Name: <input type="text" name="name" />
+				</p>
+				<p>
+					Description: <input type="text" name="description" />
+				</p>
+				<p>
+					Date: <input type="date" name="date"
+						th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
+						placeholder="yyyy-mm-dd" />
+				</p>
+				<p>
+					Image: <input type="file" id="image" name="image">
+				</p>
+				<input type="submit" name="InsertProduct">
+			</fieldset>
+		</form>
+	</div>
+</body>
+</html>
