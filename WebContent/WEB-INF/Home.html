@@ -10,12 +10,11 @@
 </div>
 <h1 th:text="${'Welcome ' + session.user.username}"></h1>
 <br>
-	<!-- <p th:text = --> 
-	<div>
+	<div th:if="${prodDay!=null}">
 		<img alt="photo"
-			th:src="*{'data:image/png;base64,'+ prodDay.getImage()}">
+			th:src="*{'data:image/png;base64,'+ prodDay.getImageData()}">
 		<p th:text="${prodDay.getDescription()}"></p>
-		<!-- <span th:each="t : ${photo.tags}" th:text="${t.label} +' '"></span> -->
 	</div>
+	<p th:unless="${prodDay!=null}">No product for today</p>
 </body>
 </html>

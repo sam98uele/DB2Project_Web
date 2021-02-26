@@ -71,19 +71,21 @@ public class Home extends HttpServlet {
 			return;			
 		}
 		
+		Product prodDay;
 		try {
 			//Search for the product of the day
-			Product prodDay = prodUserSer.getProductOfTheDay();
-			String path = "/WEB-INF/Home.html";
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			//Load the product of the day in the persistence context
-			ctx.setVariable("prodDay", prodDay);
-			templateEngine.process(path, ctx, response.getWriter());
+			prodDay = prodUserSer.getProductOfTheDay();
 		} catch (NoProductOfTheDayException e) {
-			//TODO: Print something that there is no product of the day
-			System.out.println(e);
-		}		
+			//Set product of the day null if there is the exception is rised
+			prodDay = null;
+		}
+		
+		String path = "/WEB-INF/Home.html";
+		ServletContext servletContext = getServletContext();
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		//Load the product of the day in the persistence context, null if there is no product of the day
+		ctx.setVariable("prodDay", prodDay);
+		templateEngine.process(path, ctx, response.getWriter());
 	}
 	
 	
