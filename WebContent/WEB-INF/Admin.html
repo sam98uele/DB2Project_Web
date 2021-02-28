@@ -10,11 +10,11 @@
 </div>
 <h1 th:text="${'Welcome ' + session.user.username + ' to the Admin page'}"></h1>
 <div align="left">
-	<a th:href="@{/Creation}">Insert a product</a>
-	<br>
-	<a th:href="@{/Inspection}">Inspect questionnaire</a>
-	<br>
-	<a th:href="@{/Deletion}">Delete a questionnaire</a>
+	<p><a th:href="@{/Creation}">Insert a product</a></p>
+	<p th:text=" ${insertionMessage}"></p>
+	<p><a th:href="@{/Inspection}">Inspect questionnaire</a></p>
+	<p><a th:href="@{/Deletion}">Delete a questionnaire</a></p>
+	<p></p>
 </div>
 </body>
 </html>

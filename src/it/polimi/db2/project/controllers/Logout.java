@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.servlet.http.HttpSession;
 
+import it.polimi.db2.project.services.ProductAdminService;
+import it.polimi.db2.project.services.QuestionnaireResponseService;
+
 /**
  * Servlet implementation class Logout
  */
@@ -29,7 +32,20 @@ public class Logout extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
+		ProductAdminService prodAdminSer;
+		QuestionnaireResponseService qRespSer;
 		if(session != null) {
+			try {
+				prodAdminSer = (ProductAdminService) request.getSession().getAttribute("prodAdminSer");
+				if(prodAdminSer!=null) prodAdminSer.remove();
+			}catch(Exception e) {
+			}
+			try {
+				qRespSer = (QuestionnaireResponseService) request.getSession().getAttribute("qRespSer");
+				if(qRespSer!=null) qRespSer.remove();
+			}catch(Exception e) {
+			}
+			
 			session.invalidate();
 		}
 		String path = getServletContext().getContextPath() + "/";

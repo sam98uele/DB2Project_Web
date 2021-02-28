@@ -53,24 +53,6 @@ public class Home extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Check session
-		//Check if the user is logged in, otherwise redirect to login
-		String loginPath = getServletContext().getContextPath() + "/";
-		HttpSession session = request.getSession();
-		if (session.isNew() || session.getAttribute("user") == null) {
-			response.sendRedirect(loginPath);
-			return;
-		}
-		//Check if the user is an admin or not
-		User user = (User) session.getAttribute("user");
-		if(user.isAdmin()) {
-			String path = "/WEB-INF/Admin.html";
-			ServletContext servletContext = getServletContext();
-			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			templateEngine.process(path, ctx, response.getWriter());
-			return;			
-		}
-		
 		Product prodDay;
 		try {
 			//Search for the product of the day
@@ -79,6 +61,7 @@ public class Home extends HttpServlet {
 			//Set product of the day null if there is the exception is rised
 			prodDay = null;
 		}
+		
 		
 		String path = "/WEB-INF/Home.html";
 		ServletContext servletContext = getServletContext();

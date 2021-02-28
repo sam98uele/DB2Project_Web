@@ -2,11 +2,43 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
   <display-name>DB2Project_Web</display-name>
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>Login</welcome-file>
   </welcome-file-list>
+  <!-- <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/css/*</url-pattern>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>-->
+  <error-page>
+    <!-- Missing resource -->
+    <error-code>404</error-code>
+    <location>/Error404.html</location>
+</error-page>
+<filter>
+ 	<filter-name>UserChecker</filter-name> 
+    <filter-class>it.polimi.db2.project.filters.UserLoggedIn</filter-class>
+</filter> 
+<filter-mapping> 
+   	<filter-name>UserChecker</filter-name> 
+   	<url-pattern>/Home</url-pattern> 
+   	<url-pattern>/Congratulations</url-pattern> 
+   	<url-pattern>/Leaderboard</url-pattern> 
+   	<url-pattern>/Questionnaire</url-pattern>  
+	<url-pattern>/StatQuestions</url-pattern>  
+</filter-mapping> 
+<filter>
+ 	<filter-name>AdminChecker</filter-name> 
+    	<filter-class>it.polimi.db2.project.filters.AdminLoggedIn</filter-class>
+</filter>
+<filter-mapping> 
+	<filter-name>AdminChecker</filter-name> 
+	<url-pattern>/Admin</url-pattern> 
+	<url-pattern>/AddProduct</url-pattern> 
+	<url-pattern>/AddQuestion</url-pattern> 
+	<url-pattern>/Creation</url-pattern> 
+	<url-pattern>/DeleteInsertion</url-pattern> 
+	<url-pattern>/DeleteQuestion</url-pattern> 
+	<url-pattern>/Deletion</url-pattern> 
+	<url-pattern>/Inspection</url-pattern> 
+</filter-mapping> 
 </web-app>

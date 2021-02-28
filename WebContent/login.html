@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" media="all" href="../css/style.css" th:href="@{/css/style.css}" />	
+	<meta charset="ISO-8859-1">
+	<title>Login</title>
+</head>
+<body>
+	<h1>Welcome to Gamifield marketing application</h1>
+	<fieldset>
+		<form action="Login" method="POST">
+			<p>Username: <input type="text" name="username" required> </p>
+			<p>Password: <input type="password" name="password" required></p>
+			<input type="submit" value="login">
+			<p th:text=" ${errorMsg}"  class="ErrorMessage"></p>
+		</form>
+		<br>
+		<a th:href="@{/Registration}">Registration</a>
+	</fieldset>
+</body>
+</html>

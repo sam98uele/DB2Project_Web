@@ -1,56 +1,40 @@
 package it.polimi.db2.project.controllers;
 
 import java.io.IOException;
-
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
 import it.polimi.db2.project.services.ProductAdminService;
 
 /**
- * Servlet implementation class AddQuestion
+ * Servlet implementation class DeleteInsertion
  */
-@WebServlet("/AddQuestion")
-public class AddQuestion extends HttpServlet {
+@WebServlet("/DeleteInsertion")
+public class DeleteInsertion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddQuestion() {
+    public DeleteInsertion() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String question;
-		try {
-			question = StringEscapeUtils.escapeJava(request.getParameter("question"));
-			if(question == null || question.isEmpty()) {
-				throw new Exception("Error in the input!!");
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-
-			//TODO: handle
-			return;
-		}
-		
 		ProductAdminService prodAdminSer = (ProductAdminService) request.getSession().getAttribute("prodAdminSer");
 		
-		//Add the question
-		prodAdminSer.addMarketingQuestion(question);
+		//Remove the product
+		prodAdminSer.undoCreation();
 		
-		//Redirect to the creation page
-		response.sendRedirect(getServletContext().getContextPath() + "/Creation");
-
+		//Redirect to the home page, with the message TODO: message your product is been removed correctly
+		response.sendRedirect(getServletContext().getContextPath() + "/Admin?insertionMessage=Your product has been deleted successfully");
 	}
+
 }

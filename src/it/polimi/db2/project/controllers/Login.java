@@ -2,6 +2,7 @@ package it.polimi.db2.project.controllers;
 
 import java.io.IOException;
 import javax.ejb.EJB;
+import javax.naming.InitialContext;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +16,8 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.db2.project.services.ProductAdminService;
+import it.polimi.db2.project.services.QuestionnaireResponseService;
 import it.polimi.db2.project.services.UserService;
 import it.polimi.db2.project.entities.User;
 import it.polimi.db2.project.exceptions.ApplicationErrorException;
@@ -25,7 +28,7 @@ import it.polimi.db2.project.exceptions.CredentialsException;
 /**
  * Servlet implementation class Registration
  */
-@WebServlet("/")
+@WebServlet("/Login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
@@ -53,7 +56,7 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String path = "index.html";
+    	String path = "login.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		templateEngine.process(path, ctx, response.getWriter());
@@ -77,7 +80,7 @@ public class Login extends HttpServlet {
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errorMsg", e.getMessage()); 
-			String path = "index.html";
+			String path = "login.html";
 			templateEngine.process(path, ctx, response.getWriter());
 			return;
 		}
@@ -90,13 +93,43 @@ public class Login extends HttpServlet {
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errorMsg", e.getMessage());
-			String path = "index.html";
+			String path = "login.html";
 			templateEngine.process(path, ctx, response.getWriter());
 			return;
 		}
 		
 		request.getSession().setAttribute("user", user);
-		String path = getServletContext().getContextPath() + "/Home";
+		
+		if(user.isAdmin()) {
+			ProductAdminService prodAdminSer = null;
+			try {
+				// Get the Initial Context for the JNDI lookup for a local EJB
+				InitialContext ic = new InitialContext();
+				// Retrieve the EJB using JNDI lookup
+				prodAdminSer = (ProductAdminService) ic.lookup("java:/openejb/local/ProductAdminServiceLocalBean");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			request.getSession().setAttribute("prodAdminSer", prodAdminSer);
+		}else {
+			QuestionnaireResponseService qRespSer = null;
+			try {
+				// Get the Initial Context for the JNDI lookup for a local EJB
+				InitialContext ic = new InitialContext();
+				// Retrieve the EJB using JNDI lookup
+				qRespSer = (QuestionnaireResponseService) ic.lookup("java:/openejb/local/QuestionnaireResponseServiceLocalBean");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			request.getSession().setAttribute("qRespSer", qRespSer);
+		}
+		
+		String path;
+		if(user.isAdmin()) {
+			path = getServletContext().getContextPath() + "/Admin";
+		}else {
+			path = getServletContext().getContextPath() + "/Home";
+		}
 		response.sendRedirect(path);
 	}
 }
