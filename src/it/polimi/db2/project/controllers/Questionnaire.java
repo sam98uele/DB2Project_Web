@@ -8,12 +8,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.db2.project.entities.User;
+import it.polimi.db2.project.exceptions.InvalidActionException;
+import it.polimi.db2.project.exceptions.NoProductOfTheDayException;
 import it.polimi.db2.project.services.QuestionnaireResponseService;
 
 /**
@@ -46,9 +50,20 @@ public class Questionnaire extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		QuestionnaireResponseService qRespSer = (QuestionnaireResponseService) request.getSession().getAttribute("qRespSer");
 		
+		HttpServletRequest req = (HttpServletRequest) request;
+		HttpSession session = req.getSession();
+		User user = (User) session.getAttribute("user");
+		
+		try {
+			qRespSer.startQuestionnaire(user);
+		} catch (NoProductOfTheDayException | InvalidActionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		String path = "/WEB-INF/Questionnaire.html";
 		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());		
 		ctx.setVariable("product", qRespSer.getProduct());
 		ctx.setVariable("response", qRespSer.getResponse());
 		templateEngine.process(path, ctx, response.getWriter());
