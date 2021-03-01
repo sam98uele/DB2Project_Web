@@ -15,6 +15,10 @@
 			th:src="*{'data:image/png;base64,'+ prodDay.getImageData()}">
 		<p th:text="${prodDay.getDescription()}"></p>
 	</div>
+	<div th:if="${prodDay!=null}">>
+		<a th:href="@{/Questionnaire}" th:if="true">Answere the questions</a> <!-- TODO if -->
+		<p th:unless="true">You already answered the questions</p> <!-- TODO if  -->
+	</div>
 	<p th:unless="${prodDay!=null}">No product for today</p>
 </body>
 </html>

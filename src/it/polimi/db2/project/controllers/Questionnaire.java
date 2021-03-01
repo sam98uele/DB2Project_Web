@@ -14,6 +14,8 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.db2.project.services.QuestionnaireResponseService;
+
 /**
  * Servlet implementation class Questionnaire
  */
@@ -42,11 +44,13 @@ public class Questionnaire extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Check session
+		QuestionnaireResponseService qRespSer = (QuestionnaireResponseService) request.getSession().getAttribute("qRespSer");
 		
-		String path = "/WEB-INF/Registration.html";
+		String path = "/WEB-INF/Questionnaire.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		ctx.setVariable("product", qRespSer.getProduct());
+		ctx.setVariable("response", qRespSer.getResponse());
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

@@ -25,6 +25,8 @@
    	<url-pattern>/Leaderboard</url-pattern> 
    	<url-pattern>/Questionnaire</url-pattern>  
 	<url-pattern>/StatQuestions</url-pattern>  
+	<url-pattern>/DeleteQuestionnaire</url-pattern>
+	<url-pattern>/SendQuestionnaire</url-pattern>    
 </filter-mapping> 
 <filter>
  	<filter-name>AdminChecker</filter-name> 
@@ -39,6 +41,6 @@
 	<url-pattern>/DeleteInsertion</url-pattern> 
 	<url-pattern>/DeleteQuestion</url-pattern> 
 	<url-pattern>/Deletion</url-pattern> 
-	<url-pattern>/Inspection</url-pattern> 
+	<url-pattern>/Inspection</url-pattern>
 </filter-mapping> 
 </web-app>

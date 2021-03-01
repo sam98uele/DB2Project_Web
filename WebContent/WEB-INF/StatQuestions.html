@@ -1,10 +1,37 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
 </head>
 <body>
-<h1>Statistics</h1>
+	<h1>Statistical questions</h1>
+	<fieldset>
+		<form action="#" id="stat" th:action="@{/StatQuestions}" method="POST">
+			<thead>
+				<tr>
+					<th>Number</th>
+					<th>Question</th>
+				</tr>
+			</thead>
+			<table>
+				<tr>
+					<td>1</td>
+					<td>Age: <br></td><!-- TODO: menu a tendina -->
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>Sex: </td><!-- TODO: menu a tendina -->
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>Expertise level: </td><!-- TODO: menu a tendina -->
+				</tr>
+			</table>
+			<input type="Submit" name="submit" value="Submit the form">
+			<input type="Submit" name="marketingQuestions" value="Return to marketing questions">
+		</form>
+		<button onclick="location.href='/DeleteQuestionnaire'">Cancel all</button>
+	</fieldset>
 </body>
 </html>

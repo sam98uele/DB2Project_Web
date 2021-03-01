@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
+import it.polimi.db2.project.exceptions.InvalidActionException;
 import it.polimi.db2.project.services.ProductAdminService;
 
 /**
@@ -47,7 +48,12 @@ public class AddQuestion extends HttpServlet {
 		ProductAdminService prodAdminSer = (ProductAdminService) request.getSession().getAttribute("prodAdminSer");
 		
 		//Add the question
-		prodAdminSer.addMarketingQuestion(question);
+		try {
+			prodAdminSer.addMarketingQuestion(question);
+		} catch (InvalidActionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//Redirect to the creation page
 		response.sendRedirect(getServletContext().getContextPath() + "/Creation");

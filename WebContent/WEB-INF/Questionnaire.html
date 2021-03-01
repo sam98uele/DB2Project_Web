@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
 </head>
 <body>
-<h1>Questionnaire</h1>
+	<h1>Questionnaire</h1>
+	<fieldset>
+		<form action="#" id="questionnaire" th:action="@{/StatQuestions}" method="POST">
+			<thead>
+				<tr>
+					<th>Number</th>
+					<th>Question</th>
+				</tr>
+			</thead>
+			<table>
+				<!--<tr th:each="p,i : ${product.getMarketingQuestions()}">
+					<td th:text="${i+1}"></td>
+								<td th:text="${p.getQuestion()}"><br>
+								<textarea th:name="i" rows="2" cols="40" th:value="${response.getResponseMarketingById(i)}"></textarea>
+								</td>
+								<br>
+								<br>
+				</tr>-->
+			</table>
+			<input type="Submit" name="StatQuestions" value="Go to statistical questions">
+		</form>
+		<button onclick="location.href='/DeleteQuestionnaire'">Cancel all</button>
+	</fieldset>
 </body>
 </html>
