@@ -7,22 +7,22 @@
 <body>
 	<h1>Questionnaire</h1>
 	<fieldset>
-		<form action="#" id="questionnaire" th:action="@{/StatQuestions}" method="POST">
-			<thead>
-				<tr>
-					<th>Number</th>
-					<th>Question</th>
-				</tr>
-			</thead>
+		<form action="#" id="questionnaire" th:action="@{/Questionnaire}" method="POST">
 			<table>
-				<tr th:each="p,i : ${product.getMarketingQuestions()}">
-					<td th:text="${i+1}"></td>
-								<td th:text="${p.getQuestion()}"><br>
-								<textarea th:name="i" rows="2" cols="40" th:value="${response.getResponseMarketingById(i)}"></textarea>
-								</td>
-								<br>
-								<br>
-				</tr>
+				<thead>
+					<tr>
+						<th>Number</th>
+						<th>Question</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="p,i : ${product.getMarketingQuestions()}">
+						<td><p th:text="${i.index+1}"></p></td>
+						<td><p th:text="${p.getQuestion()}"></p>
+							<textarea th:name="'quest' + ${i.index}" rows="2" cols="40" th:text="${response.getResponseMarketingById(i.index)}"></textarea>
+						</td>
+					</tr>
+				</tbody>
 			</table>
 			<input type="Submit" name="StatQuestions" value="Go to statistical questions">
 		</form>

@@ -1,6 +1,7 @@
 package it.polimi.db2.project.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,11 +11,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringEscapeUtils;
+import org.eclipse.persistence.indirection.IndirectList;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.db2.project.entities.MarketingAnswer;
 import it.polimi.db2.project.entities.User;
 import it.polimi.db2.project.exceptions.InvalidActionException;
 import it.polimi.db2.project.exceptions.NoProductOfTheDayException;
@@ -73,7 +77,23 @@ public class Questionnaire extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
+		QuestionnaireResponseService qRespSer = (QuestionnaireResponseService) request.getSession().getAttribute("qRespSer");
+		
+		List<MarketingAnswer> marketingAnswers = new IndirectList<>();
+		int numQuestions = qRespSer.getProduct().getMarketingQuestions().size();
+		for(Integer i = 0; i<numQuestions; i++) {
+			MarketingAnswer questResp = new MarketingAnswer(); 			
+			questResp.setAnswer(StringEscapeUtils.escapeJava(request.getParameter("quest" + i.toString())));
+			marketingAnswers.add(questResp);
+			questResp.setQuestion(qRespSer.getProduct().getMarketingQuestions().get(i));
+		}
+		
+		qRespSer.goToStatisticalSection(marketingAnswers);
+		
+		System.out.println(qRespSer.getResponse().getResponseMarketingById(0));
+		System.out.println(qRespSer.getResponse().getResponseMarketingById(1));
+		System.out.println(qRespSer.getResponse().getResponseMarketingById(2));
+		
+		response.sendRedirect(getServletContext().getContextPath() + "/StatQuestions");
 	}
-
 }
