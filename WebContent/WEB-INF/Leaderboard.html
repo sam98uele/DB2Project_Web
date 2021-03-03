@@ -6,5 +6,21 @@
 </head>
 <body>
 <h1>Welcome to the LEADERBOARD</h1>
+<table>
+				<thead>
+					<tr>
+						<th>Position</th>
+						<th>User</th>
+						<th>Points</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="p,i : ${leaderboard}">
+						<td><p th:text="${i.index+1}"></p></td>
+						<td><p th:text="${p.getUsername()}"></p></td>
+						<td><p th:text="${p.getPoints()}"></p></td>
+					</tr>
+				</tbody>
+			</table>
 </body>
 </html>
