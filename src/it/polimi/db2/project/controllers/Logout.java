@@ -48,7 +48,16 @@ public class Logout extends HttpServlet {
 			
 			session.invalidate();
 		}
-		String path = getServletContext().getContextPath() + "/";
+		
+		String path;
+		try {
+			Integer ID = Integer.parseInt(request.getParameter("ID"));			
+			path = getServletContext().getContextPath() + "/Login?ID=" +ID;
+		}catch(Exception e) {
+			//If there is no ID an exception is trown
+			path = getServletContext().getContextPath() + "/Login";
+		}
+
 		response.sendRedirect(path);
 	}
 

@@ -1,6 +1,10 @@
 package it.polimi.db2.project.filters;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -11,6 +15,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 import it.polimi.db2.project.entities.User;
 
@@ -45,6 +51,7 @@ public class AdminLoggedIn implements Filter {
 		HttpServletResponse res = (HttpServletResponse) response;
 		String loginPath = req.getServletContext().getContextPath() + "/";
 		String userPath = req.getServletContext().getContextPath() + "/Home";
+		String logoutPath = req.getServletContext().getContextPath() + "/Logout?ID=5"; //ID=5 session expired
 		
 		HttpSession session = req.getSession();
 		if (session.isNew() || session.getAttribute("user") == null) {
@@ -57,6 +64,15 @@ public class AdminLoggedIn implements Filter {
 			res.sendRedirect(userPath);
 			return;
 		}
+		
+		Date creationDate = new Date(session.getCreationTime());
+		Date todayDate = Calendar.getInstance().getTime();
+		
+		if(!DateUtils.isSameDay(creationDate, todayDate)) {
+			res.sendRedirect(logoutPath);
+			return;
+		}
+		
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}

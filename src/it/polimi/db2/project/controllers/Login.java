@@ -59,6 +59,15 @@ public class Login extends HttpServlet {
     	String path = "login.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		try {
+			Integer ID = Integer.parseInt(request.getParameter("ID"));
+			if(ID == 5) {
+				//ID=5 session expired
+				ctx.setVariable("errorMsg", "Session Expired!"); 
+			}
+		}catch(Exception e) {
+			//Do nothing, because if there is no id an exception is trown
+		}
 		templateEngine.process(path, ctx, response.getWriter());
     }
 

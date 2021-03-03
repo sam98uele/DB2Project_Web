@@ -90,10 +90,6 @@ public class Questionnaire extends HttpServlet {
 		
 		qRespSer.goToStatisticalSection(marketingAnswers);
 		
-		System.out.println(qRespSer.getResponse().getResponseMarketingById(0));
-		System.out.println(qRespSer.getResponse().getResponseMarketingById(1));
-		System.out.println(qRespSer.getResponse().getResponseMarketingById(2));
-		
 		response.sendRedirect(getServletContext().getContextPath() + "/StatQuestions");
 	}
 }
