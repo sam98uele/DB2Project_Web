@@ -15,6 +15,7 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.db2.project.exceptions.ProductException;
 import it.polimi.db2.project.services.ProductAdminService;
 
 /**
@@ -68,7 +69,12 @@ public class Creation extends HttpServlet {
 		ProductAdminService prodAdminSer = (ProductAdminService) request.getSession().getAttribute("prodAdminSer");
 		
 		//When the person save the product and the questions
-		prodAdminSer.saveProduct();
+		try {
+			prodAdminSer.saveProduct();
+		} catch (ProductException e) {
+			// TODO Implement catch
+			e.printStackTrace();
+		}
 		
 		//Redirect to the home page
 		response.sendRedirect(getServletContext().getContextPath() + "/Admin?insertionMessage=Your product has been inserted successfully");
