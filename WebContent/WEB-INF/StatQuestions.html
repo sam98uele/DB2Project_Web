@@ -26,9 +26,9 @@
 						<td>Sex: 
 							<p><select name="sex">
 								<option value="" disabled hidden selected>Choose</option>
-								<option value="0" th:selected="${stat.getQ2() != null || stat.getQ2()==0}">Male</option>
-								<option value="1" th:selected="${stat.getQ2() != null || stat.getQ2()==1}">Female</option>
-								<option value="2" th:selected="${stat.getQ2() != null || stat.getQ2()==2}">Undefined</option>
+								<option value="0" th:selected="${stat.getQ2() != null && stat.getQ2()==0}">Male</option>
+								<option value="1" th:selected="${stat.getQ2() != null && stat.getQ2()==1}">Female</option>
+								<option value="2" th:selected="${stat.getQ2() != null && stat.getQ2()==2}">Undefined</option>
 							</select></p>
 						</td>
 					</tr>
@@ -37,9 +37,9 @@
 						<td>Expertise level: 
 							<p><select name="level">
 								<option value="" disabled hidden selected>Choose</option>
-								<option value="0" th:selected="${stat.getQ3() != null || stat.getQ3()==0}">Low</option>
-								<option value="1" th:selected="${stat.getQ3() != null || stat.getQ3()==1}">Medium</option>
-								<option value="2" th:selected="${stat.getQ3() != null || stat.getQ3()==2}">High</option>
+								<option value="0" th:selected="${stat.getQ3() != null && stat.getQ3()==0}">Low</option>
+								<option value="1" th:selected="${stat.getQ3() != null && stat.getQ3()==1}">Medium</option>
+								<option value="2" th:selected="${stat.getQ3() != null && stat.getQ3()==2}">High</option>
 							</select></p>
 						</td>
 					</tr>
