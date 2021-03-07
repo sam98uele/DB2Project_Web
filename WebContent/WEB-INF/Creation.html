@@ -18,41 +18,45 @@
 				<input type="submit" name="InsertProduct" value="Insert the Product">
 				<p th:text=" ${errorMessage}" class="ErrorMessage"></p>
 			</form>
-			<div th:unless="${product==null}">
+			<div th:if="${product!=null}">
 				<p>Name: <input type="text" disabled th:value="${product.getName()}" /></p>
 				<p>Description: <input type="text" disabled th:value="${product.getDescription()}" /></p>
 				<p>Date: <input type="date" data-date-format="DD MMMM YYYY" disabled th:value="${product.getDate()}" /></p> <!-- TODO: girare la data stampata-->
-				<img alt="photo" width="200px" height="200px" th:src="*{'data:image/png;base64,'+ product.getImageData()}">
+				<img alt="photo" width="16%" height="16%" th:src="*{'data:image/png;base64,'+ product.getImageData()}">
 				<p class="okMessage">Product added</p>
 			</div>
 		</div>
 		<br>
-		<p>Questionnaire:</p>
-		<form action="#" id="question" th:action="@{/AddQuestion}" method="POST">
-			<table>
-				<thead>
-					<tr>
-						<th>Question</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody th:if="${product!=null}">
-					<tr th:each="q,i : ${product.getMarketingQuestions()}">
-						<td th:text="${q.getQuestion()}"></td>
-						<td><a th:href="@{/DeleteQuestion(questionId=${i.index})}">Delete</a></td>
-					</tr>
-				</tbody>
-				<tbody>
-						<td><textarea name="question" rows="2" cols="40"></textarea></td>
-						<td><input type="Submit" name="Add" value="Add question"></td>
-				</tbody>
-			</table>
-		</form>
-		
-		
-		<form action="#" method="POST">
-			<input type="Submit" name="Insert" value="Send all">
-		</form>
+		<div th:if="${product!=null}">
+			<p>Questionnaire:</p>
+			<form action="#" id="question" th:action="@{/AddQuestion}" method="POST">
+				<table>
+					<thead>
+						<tr>
+							<th>Question</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody th:if="${product!=null}">
+						<tr th:each="q,i : ${product.getMarketingQuestions()}">
+							<td th:text="${q.getQuestion()}"></td>
+							<td><a th:href="@{/DeleteQuestion(questionId=${i.index})}">Delete</a></td>
+						</tr>
+					</tbody>
+					<tbody>
+						<tr>
+							<td><textarea name="question" rows="2" cols="40"></textarea></td>
+							<td><input type="Submit" name="Add" value="Add question"></td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+			
+			
+			<form action="#" method="POST">
+				<input type="Submit" name="Insert" value="Send all">
+			</form>
+		</div>
 		
 		<form action="#" th:action="@{/DeleteInsertion}" method="POST">
 			<input type="Submit" name="cancelAll" value="Cancel All">

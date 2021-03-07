@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
+</head>
+<body>
+	<h1>Welcome to the Users questionnaire inspection</h1>
+	<fieldset>
+		<h4 th:text="'The answer of the product: ' + ${name} + '; in date: ' + ${date}"></h4>
+		<table width="100%">
+			<tr>
+				<td width="50%" valign="top">
+					<table width="100%">
+						<thead>
+							<tr>
+								<th style="border-right: 1px solid black">Users who submitted the questionnaire</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td style="border-right: 1px solid black">
+									<table width = "100%" th:if=${subUsers.size()!=0}>
+										<thead>
+											<tr>
+												<th width = "8%">N°</th>
+												<th width = "56%">User</th>
+												<th width = "36%">Action</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="u,i : ${subUsers}">
+												<td th:text="${i.index}" style="text-align: center"></td>
+												<td th:text="${u.getUsername()}" style="text-align: center"></td>
+												<td style="text-align: center"><a th:href="@{/UserAnswerInspection(ID=${u.getId()})}">Check answers</a></td>
+											</tr>
+										</tbody>
+									</table>
+									<p th:if=${subUsers.size()==0} style="text-align: center">No one submitted the questionnaire</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td width="50%" valign="top">
+					<table width="100%">
+						<thead>
+							<tr>
+								<th>Users who cancelled the questionnaire</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+									<table width = "100%" th:if=${delUsers.size()!=0}>
+										<thead>
+											<tr>
+												<th width = "8%">N°</th>
+												<th width = "56%">User</th>
+												<th width = "36%">Action</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="u,i : ${delUsers}">
+												<td th:text="${i.index}" style="text-align: center"></td>
+												<td th:text="${u.getUsername()}" style="text-align: center"></td>
+												<td style="text-align: center"><a th:href="@{/UserAnswerInspection(ID=${u.getId()})}">Check answers</a></td>
+											</tr>
+										</tbody>
+									</table>
+									<p th:if=${delUsers.size()==0} style="text-align: center">No one cancelled the questionnaire</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>										
+				</td>
+			</tr>
+		</table>
+	</fieldset>
+</body>
+</html>
