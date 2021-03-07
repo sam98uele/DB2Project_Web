@@ -60,12 +60,6 @@ public class Deletion extends HttpServlet {
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
 		try {
-			ctx.setVariable("pastProd", prodSer.getPastScheduledProductOfTheDay());
-		}catch(Exception e) {
-			//TODO handle
-		}
-		
-		try {
 			Integer ID = Integer.parseInt(request.getParameter("ID"));
 			
 			String name=  prodSer.getProductById(ID).getName();
@@ -78,6 +72,12 @@ public class Deletion extends HttpServlet {
 			ctx.setVariable("errorMsg", e.getMessage()); 
 		}catch(Exception e) {
 			//Do nothing, because if there is no id an exception is thrown, so there are no product to delete
+		}
+		
+		try {
+			ctx.setVariable("pastProd", prodSer.getPastScheduledProductOfTheDay());
+		}catch(Exception e) {
+			//TODO handle
 		}
 		
 		templateEngine.process(path, ctx, response.getWriter());
