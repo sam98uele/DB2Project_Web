@@ -40,7 +40,7 @@
 								<tr>
 									<td style="text-align: center" th:if="${statAns.getQ2() == 0}">Experience: low</td>
 									<td style="text-align: center" th:if="${statAns.getQ2() == 1}">Experience: medium</td>
-									<td style="text-align: center" th:if="$statAns.getQ2() == 2}">Experience: high</td>
+									<td style="text-align: center" th:if="${statAns.getQ2() == 2}">Experience: high</td>
 									<!-- <td th:text="'Experience: '+ ${r.getStatisticalAnswers().getQ3() == 0}? 'low' : '' +
 															   ${r.getStatisticalAnswers().getQ3() == 1}? 'medium' : '' + 
 															   ${r.getStatisticalAnswers().getQ3() == 2}? 'high' : ''"></td>
