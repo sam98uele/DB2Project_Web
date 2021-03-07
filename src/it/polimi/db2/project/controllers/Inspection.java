@@ -57,9 +57,9 @@ public class Inspection extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		try {
-		ctx.setVariable("pastProd", prodSer.getPastScheduledProductOfTheDay());
+			ctx.setVariable("pastProd", prodSer.getPastScheduledProductOfTheDay());
 		}catch(Exception e) {
-			//To handle
+			//TODO handle
 		}
 		templateEngine.process(path, ctx, response.getWriter());
 	}

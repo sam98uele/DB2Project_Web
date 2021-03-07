@@ -6,7 +6,50 @@
 </head>
 <body>
 	<h1>Welcome to the user answer inspection page</h1>
-	<h4 th:text="'The answer of the user: ' + ${}"></h4>
-	
+	<h4 th:text="'The answer of the user: ' + ${user} + ' to the product: ' + ${name} + ' in date: ' +  ${date}"></h4>
+	<fieldset>
+		<table th:if="${true}" width="100%">
+				<thead>
+					<tr>
+						<th width="60%" style="border-top: 1px solid black">Questionnaire Responses</th>
+						<th width="40%" style="border-top: 1px solid black">Statistical Answers</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td style="border-top: 1px solid black">
+							<table width = "100%">
+								<tr th:each="q, i : ${markAns}">
+									<td>
+										<p style="text-align: center" th:text = "'Q' + ${i.index + 1} + ': ' + ${q.getQuestion().getQuestion()}"></p>
+										<p style="text-align: center" th:text = "'Answer: ' + ${q.getAnswer()}"></p>
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td  style="border-top: 1px solid black">
+							<table width = "100%">
+								<tr>
+									<td style="text-align: center" th:text="'Age: ' + ${statAns.getQ1()}"></td>
+								</tr>
+								<tr>
+									<td style="text-align: center" th:if="${statAns.getQ2() == 0}">Sex: male</td>
+									<td style="text-align: center" th:if="${statAns.getQ2() == 1}">Sex: female</td>
+									<td style="text-align: center" th:if="${statAns.getQ2() == 2}">Sex: undefined</td>
+								</tr>
+								<tr>
+									<td style="text-align: center" th:if="${statAns.getQ2() == 0}">Experience: low</td>
+									<td style="text-align: center" th:if="${statAns.getQ2() == 1}">Experience: medium</td>
+									<td style="text-align: center" th:if="$statAns.getQ2() == 2}">Experience: high</td>
+									<!-- <td th:text="'Experience: '+ ${r.getStatisticalAnswers().getQ3() == 0}? 'low' : '' +
+															   ${r.getStatisticalAnswers().getQ3() == 1}? 'medium' : '' + 
+															   ${r.getStatisticalAnswers().getQ3() == 2}? 'high' : ''"></td>
+								 --></tr>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+	</fieldset>
 </body>
 </html>

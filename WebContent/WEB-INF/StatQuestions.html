@@ -48,7 +48,7 @@
 			<input type="Submit" name="submit" value="Submit the form">
 			<input type="Submit" name="marketingQuestions" value="Return to marketing questions">
 		</form>
-		<button onclick="location.href='/DeleteQuestionnaire'">Cancel all</button>
+		<button th:onclick="'location.href=\'' + @{/DeleteQuestionnaire} + '\''" >Cancel all</button>
 	</fieldset>
 </body>
 </html>

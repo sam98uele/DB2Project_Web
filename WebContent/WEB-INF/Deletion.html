@@ -1,10 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+	<link rel="stylesheet" type="text/css" media="all" href="../css/style.css" th:href="@{/css/style.css}" />	
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
 </head>
 <body>
-<h1>Admin deletion page</h1>
+	<h1>Admin deletion page</h1>
+	<fieldset>
+		<h4>This is the list of the past questionnaire</h4>
+		<p th:text=" ${errorMsg}"  class="ErrorMessage"></p>
+		<p th:text="${okMessage}" class="okMessage"></p>
+		<table>
+			<thead>
+				<tr>
+					<th width="4%">N°</th>
+					<th width="10%">Date</th>
+					<th width="14%">Name</th>
+					<th width="42%" style="text-align: left">Image</th>
+					<th width="10%" style="text-align: right">Inspect</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="p,i : ${pastProd}">
+					<td th:text="${i.index}" style="text-align: center"></td>
+					<td th:text=${p.getDate()} style="text-align: center"></td>
+					<td th:text=${p.getName} style="text-align: center"></td>
+					<td style="text-align: left"><img alt="photo" height="60px" style="object-fit: contain" th:src="*{'data:image/png;base64,'+ p.getImageData()}"></td>
+					<td style="text-align: right"><a th:href="@{/Deletion(ID=${p.getId()})}">delete</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</fieldset>
 </body>
 </html>

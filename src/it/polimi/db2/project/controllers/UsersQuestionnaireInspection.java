@@ -88,6 +88,8 @@ public class UsersQuestionnaireInspection extends HttpServlet {
 			//TODO handle
 		}
 		
+		ctx.setVariable("IDprod", ID);
+		
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

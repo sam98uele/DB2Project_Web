@@ -58,7 +58,7 @@
 						<td th:text="${r.getUser().getUsername()}"  style="text-align: center; border-top: 1px solid black"></td>
 						<td style="border-top: 1px solid black">
 							<table>
-								<tr th:each="q, i : ${r.getOrderedMarketingAnswers()}">
+								<tr th:each="q, i : ${r.getMarketingAnswers()}">
 									<td>
 										<p th:text = "'Q' + ${i.index + 1} + ': ' + ${q.getQuestion().getQuestion()}"></p>
 										<p th:text = "'Answer: ' + ${q.getAnswer()}"></p>

@@ -2,6 +2,7 @@ package it.polimi.db2.project.controllers;
 
 import java.io.IOException;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +15,11 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.db2.project.exceptions.InvalidActionException;
+import it.polimi.db2.project.exceptions.ProductException;
+import it.polimi.db2.project.services.ProductService;
+import it.polimi.db2.project.services.QuestionnaireAdminService;
+
 /**
  * Servlet implementation class Deletion
  */
@@ -21,6 +27,12 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 public class Deletion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
+	
+	@EJB(name = "it.polimi.db2.project.services/QuestionnaireAdminService")
+	private QuestionnaireAdminService questAdminSer;
+	
+	@EJB(name = "it.polimi.db2.project.services/ProductService")
+	private ProductService prodSer;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -46,6 +58,28 @@ public class Deletion extends HttpServlet {
 		String path = "/WEB-INF/Deletion.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		
+		try {
+			ctx.setVariable("pastProd", prodSer.getPastScheduledProductOfTheDay());
+		}catch(Exception e) {
+			//TODO handle
+		}
+		
+		try {
+			Integer ID = Integer.parseInt(request.getParameter("ID"));
+			
+			String name=  prodSer.getProductById(ID).getName();
+				
+			questAdminSer.deleteQuestionnaires(ID);	
+				
+				
+			ctx.setVariable("okMessage", "Product " + name + " is been deleted correctly"); 
+		}catch(InvalidActionException | ProductException e) {
+			ctx.setVariable("errorMsg", e.getMessage()); 
+		}catch(Exception e) {
+			//Do nothing, because if there is no id an exception is thrown, so there are no product to delete
+		}
+		
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 
@@ -53,8 +87,7 @@ public class Deletion extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+			doGet(request, response);
 	}
 
 }
