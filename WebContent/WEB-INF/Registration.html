@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Registration</title>
+	<link rel="stylesheet" type="text/css" media="all" href="../css/style.css" th:href="@{/css/style.css}" />	
+	<meta charset="ISO-8859-1">
+	<title>Registration</title>
 </head>
 <body>
 	<h1>Welcome to Gamifield marketing application</h1>
-	
-	<form action="Login" method="POST">
-		Username: <input type="text" name="username" required> <br>
-		Password: <input type="password" name="pwd" required><br>
-		Password: <input type="text" name="email" required><br>
-		<input type="submit" value="register">
-		<p th:text=" ${errorMsg}"></p>
-	</form>
-	<br>
-	<a th:href="@{/}">Login</a>
+	<fieldset>
+		<form action="Registration" method="POST">
+			<p>Username: <input type="text" name="username" required></p>
+			<p>Password: <input type="password" name="password" required></p>
+			<p>Email: <input type="text" name="email" required></p>
+			<input type="submit" value="register">
+			<p th:text=" ${errorMsg}" class="ErrorMessage"></p>
+		</form>
+		<br>
+		<a th:href="@{/}">Login</a>
+	</fieldset>
 </body>
 </html>

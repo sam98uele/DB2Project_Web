@@ -5,20 +5,92 @@
 <title>Insert title here</title>
 </head>
 <body>
-<div align="right">
-	<a th:href="@{/Logout}">Logout</a>
-</div>
-<h1 th:text="${'Welcome ' + session.user.username}"></h1>
-<br>
+	<table width="100%">
+		<tr>
+			<td width="70%">
+				<h1 th:text="${'Welcome ' + session.user.username}"></h1>
+			</td>
+			<td width="30%" style="text-align: right">
+				<a th:href="@{/Leaderboard}">Leaderboard</a>
+				<a th:href="@{/Logout}">Logout</a>
+			</td>
+		</tr>
+	</table>
+	<!-- If there are no product available -->
+	<h4 th:if="${prodDay==null}">No product for today</h4>
+	
 	<div th:if="${prodDay!=null}">
-		<img alt="photo"
-			th:src="*{'data:image/png;base64,'+ prodDay.getImageData()}">
-		<p th:text="${prodDay.getDescription()}"></p>
+		<table width="100%">
+			<tr>
+				<td width="30%">
+					<h4 th:text="'The product of the day is: ' + ${prodDay.getName()}"></h4>
+					<img alt="photo" width="100%" height="300px" style="object-fit: contain" th:src="*{'data:image/png;base64,'+ prodDay.getImageData()}">
+				</td>
+				<td width="70%">
+					<h4>Description of the product:</h4>
+					<p th:text="${prodDay.getDescription()}"></p>
+					<hr>
+					<div th:if="${prodDay!=null}">
+						<a th:href="@{/Questionnaire}" th:if="${!AlreadyAnsweres}">Answer the questions</a> <!-- TODO if -->
+						<p th:if="${AlreadyAnsweres}">You already answered the questions</p> <!-- TODO if  -->
+					</div>	
+				</td>
+			</tr>
+		</table>
 	</div>
-	<div th:if="${prodDay!=null}">>
-		<a th:href="@{/Questionnaire}" th:if="true">Answere the questions</a> <!-- TODO if -->
-		<p th:unless="true">You already answered the questions</p> <!-- TODO if  -->
-	</div>
-	<p th:unless="${prodDay!=null}">No product for today</p>
+	
+	<!-- Display the list of answered questionnaire -->
+	<fieldset th:if="${prodDay!=null}">
+		<h2>Questionnaire answers</h2>
+			<!-- If the size is 0, there are no answers -->
+			<table th:if="${reviews.size() != 0}" width="100%">
+				<thead>
+					<tr>
+						<th width="4%"  style="border-top: 1px solid black">N°</th>
+						<th width="10%" style="border-top: 1px solid black">User</th>
+						<th width="66%" style="border-top: 1px solid black">Questionnaire Responses</th>
+						<th width="20%" style="border-top: 1px solid black">Statistical Answers</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="r,i : ${reviews}" style="border-top: 1px solid black">
+						<td th:text="${i.index}" style="text-align: center; border-top: 1px solid black"></td>
+						<td th:text="${r.getUser().getUsername()}"  style="text-align: center; border-top: 1px solid black"></td>
+						<td style="border-top: 1px solid black">
+							<table>
+								<tr th:each="q, i : ${r.getMarketingAnswers()}">
+									<td>
+										<p th:text = "'Q' + ${i.index + 1} + ': ' + ${q.getQuestion().getQuestion()}"></p>
+										<p th:text = "'Answer: ' + ${q.getAnswer()}"></p>
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td  style="border-top: 1px solid black">
+							<table>
+								<tr>
+									<td th:text="'Age: ' + ${r.getStatisticalAnswers().getQ1()}"></td>
+								</tr>
+								<tr>
+									<td th:if="${r.getStatisticalAnswers().getQ2() == 0}">Sex: male</td>
+									<td th:if="${r.getStatisticalAnswers().getQ2() == 1}">Sex: female</td>
+									<td th:if="${r.getStatisticalAnswers().getQ2() == 2}">Sex: undefined</td>
+								</tr>
+								<tr>
+									<td th:if="${r.getStatisticalAnswers().getQ2() == 0}">Experience: low</td>
+									<td th:if="${r.getStatisticalAnswers().getQ2() == 1}">Experience: medium</td>
+									<td th:if="${r.getStatisticalAnswers().getQ2() == 2}">Experience: high</td>
+									<!-- <td th:text="'Experience: '+ ${r.getStatisticalAnswers().getQ3() == 0}? 'low' : '' +
+															   ${r.getStatisticalAnswers().getQ3() == 1}? 'medium' : '' + 
+															   ${r.getStatisticalAnswers().getQ3() == 2}? 'high' : ''"></td>
+								 --></tr>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		<!-- If the size is 0, there are no answers -->
+		<b th:if="${reviews.size() == 0}">No answers yet</b>
+	</fieldset>
 </body>
 </html>

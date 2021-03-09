@@ -65,6 +65,10 @@ public class Login extends HttpServlet {
 				//ID=5 session expired
 				ctx.setVariable("errorMsg", "Session Expired!"); 
 			}
+			if(ID == 6) {
+				//ID=6 registration ok
+				ctx.setVariable("okMessage", "You registered correctly, please login"); 
+			}
 		}catch(Exception e) {
 			//Do nothing, because if there is no id an exception is trown
 		}

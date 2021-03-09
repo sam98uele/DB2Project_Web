@@ -1,6 +1,7 @@
 package it.polimi.db2.project.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -9,13 +10,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import it.polimi.db2.project.entities.User;
 import it.polimi.db2.project.exceptions.NoProductOfTheDayException;
 import it.polimi.db2.project.services.ProductUserService;
+import it.polimi.db2.project.services.UserService;
 import it.polimi.db2.project.entities.Product;
+import it.polimi.db2.project.entities.QuestionnaireResponse;
+import it.polimi.db2.project.entities.User;
 
+import org.eclipse.persistence.indirection.IndirectList;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -30,6 +33,8 @@ public class Home extends HttpServlet {
 	private TemplateEngine templateEngine;
 	@EJB(name = "it.polimi.db2.project.services/ProductUserService")
 	private ProductUserService prodUserSer;
+	@EJB(name = "it.polimi.db2.project.services/UserService")
+	private UserService userService;
 
        
     /**
@@ -66,12 +71,27 @@ public class Home extends HttpServlet {
 		String path = "/WEB-INF/Home.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		
 		//Load the product of the day in the persistence context, null if there is no product of the day
 		ctx.setVariable("prodDay", prodDay);
+		
+		//Load the Reviews of the product of the day
+		List<QuestionnaireResponse> reviews = new IndirectList<>();
+		try {
+			reviews = prodUserSer.getReviewsOfTheProductOfTheDay();
+		}catch(Exception e) {
+			//Do nothing
+		}
+		ctx.setVariable("reviews", reviews);
+		
+		//Load if the user already answered the questionnaire
+		User user = (User) request.getSession().getAttribute("user");
+		ctx.setVariable("AlreadyAnsweres", userService.answeredToQuestionnaireOfTheDay(user));
+		
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 	
-	
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
