@@ -23,12 +23,17 @@ public class Admin extends HttpServlet {
 	private TemplateEngine templateEngine;
        
     /**
+     * Default constructor 
+     * 
      * @see HttpServlet#HttpServlet()
      */
     public Admin() {
-        super();
+        
     }
     
+    /**
+     * Initialize the Servlet
+     */
     public void init() throws ServletException {
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
@@ -42,15 +47,23 @@ public class Admin extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	String path = "/WEB-INF/Admin.html";
+    	// we render the page
+		String path = "/WEB-INF/Admin.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		
 		try {
+			// if there is a message, then rendering it
 			String insertionMessage = request.getParameter("insertionMessage");
 			ctx.setVariable("insertionMessage", insertionMessage);
 		}catch(Exception e) {
-			//Do nothing
+			// if there is not a message
+			// an exception is thrown
+			// no message thrown
+			ctx.setVariable("insertionMessage", "");
 		}
+		
+		// rendering the page
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 }

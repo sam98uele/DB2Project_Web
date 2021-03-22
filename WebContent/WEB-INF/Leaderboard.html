@@ -5,8 +5,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>Welcome to the LEADERBOARD</h1>
-<table>
+	<h1>Welcome to the LEADERBOARD</h1>
+		<table th:if="${leaderboard != null}">
 				<thead>
 					<tr>
 						<th>Position</th>
@@ -21,6 +21,6 @@
 						<td><p th:text="${p.getPoints()}"></p></td>
 					</tr>
 				</tbody>
-			</table>
+		</table>
 </body>
 </html>

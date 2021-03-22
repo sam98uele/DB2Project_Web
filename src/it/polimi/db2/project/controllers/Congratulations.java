@@ -23,12 +23,16 @@ public class Congratulations extends HttpServlet {
 	private TemplateEngine templateEngine;
        
     /**
+     * Default constructor
+     * 
      * @see HttpServlet#HttpServlet()
      */
     public Congratulations() {
-        super();
     }
 
+    /**
+     * Init method
+     */
     public void init() throws ServletException {
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
@@ -49,10 +53,4 @@ public class Congratulations extends HttpServlet {
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 	
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
 }

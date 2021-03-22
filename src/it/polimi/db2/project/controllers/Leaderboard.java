@@ -17,6 +17,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.project.entities.User;
+import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.services.UserService;
 
 /**
@@ -27,6 +28,9 @@ public class Leaderboard extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
     
+	/**
+	 * UserService EJB
+	 */
 	@EJB(name = "it.polimi.db2.project.services/UserService")
 	private UserService usrService;
 	
@@ -34,10 +38,10 @@ public class Leaderboard extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public Leaderboard() {
-        super();
     }
+    
     /**
-     * 
+     * Init method
      */
     public void init() throws ServletException {
 		ServletContext servletContext = getServletContext();
@@ -49,14 +53,24 @@ public class Leaderboard extends HttpServlet {
 	}
 
     /**
+     * It will display the leaderboard
+     * 
      *  @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//TODO: Check session ??
+		// TODO: Check session ??
 		
 		// getting the leaderboard from the Backend
-		List<User> leaderboard = this.usrService.getLeaderboard();
+		List<User> leaderboard;
 		
+		try {
+			leaderboard = this.usrService.getLeaderboard();
+		} catch (ApplicationErrorException e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return;
+		}
+		
+		// rendering the page
 		String path = "/WEB-INF/Leaderboard.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
@@ -64,12 +78,5 @@ public class Leaderboard extends HttpServlet {
 		ctx.setVariable("leaderboard", leaderboard);
 		templateEngine.process(path, ctx, response.getWriter());
 	}
-
-//	/**
-//	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-//	 */
-//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		doGet(request, response);
-//	}
 
 }

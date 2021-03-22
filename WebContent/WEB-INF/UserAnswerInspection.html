@@ -6,9 +6,10 @@
 </head>
 <body>
 	<h1>Welcome to the user answer inspection page</h1>
-	<h4 th:text="'The answer of the user: ' + ${user} + ' to the product: ' + ${name} + ' in date: ' +  ${date}"></h4>
-	<fieldset>
-		<table th:if="${true}" width="100%">
+	<div th:if="${qResponse != null}">
+		<h4 th:text="'The answer of the user: ' + ${user} + ' to the product: ' + ${name} + ' in date: ' +  ${date}"></h4>
+		<fieldset>
+			<table width="100%">
 				<thead>
 					<tr>
 						<th width="60%" style="border-top: 1px solid black">Questionnaire Responses</th>
@@ -50,6 +51,10 @@
 					</tr>
 				</tbody>
 			</table>
+		</fieldset>
+	</div>
+	<fieldset th:if="${qResponse == null}">
+		<h4>The specified user does not have any response for that questionnaire.</h4>
 	</fieldset>
 </body>
 </html>

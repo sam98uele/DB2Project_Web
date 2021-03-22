@@ -29,17 +29,26 @@ import it.polimi.db2.project.services.UserService;
 public class Registration extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
+	
+	/**
+	 * UserService EJB
+	 * That manages all the actions connected to the User management
+	 */
 	@EJB(name = "it.polimi.db2.project.services/UserService")
 	private UserService usrService;
 	
        
     /**
+     * Default constructor
+     * 
      * @see HttpServlet#HttpServlet()
      */
     public Registration() {
-        super();
     }
     
+    /**
+     * Init method
+     */
     public void init() throws ServletException {
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
@@ -50,6 +59,8 @@ public class Registration extends HttpServlet {
 	}
     
 	/**
+	 * Display the registration page
+	 * 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -60,9 +71,12 @@ public class Registration extends HttpServlet {
 	}
 
 	/**
+	 * Process the registration
+	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// initializing the variables
 		String usrn = null;
 		String pwd = null;
 		String email = null;
@@ -76,6 +90,7 @@ public class Registration extends HttpServlet {
 				throw new Exception("Missing or empty credential value");
 			}
 		}catch(Exception e) {
+			// if there are some problems, we render the error page
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errorMsg", e.getMessage()); 
@@ -86,8 +101,10 @@ public class Registration extends HttpServlet {
 		
 		//Registration
 		try {
+			// we perform the registration in the user service
 			usrService.registration(usrn, email, pwd);
 		}catch(RegistrationException e) {
+			// if there are problems, render the error page
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errorMsg", e.getMessage()); 

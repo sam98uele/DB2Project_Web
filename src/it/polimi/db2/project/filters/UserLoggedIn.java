@@ -43,9 +43,9 @@ public class UserLoggedIn implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		System.out.print("User Login checker filter executing ...\n");
+		// System.out.print("User Login checker filter executing ...\n");
 
-		
+		// initializing variables
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
 		String loginPath = req.getServletContext().getContextPath() + "/";
@@ -53,22 +53,25 @@ public class UserLoggedIn implements Filter {
 		String logoutPath = req.getServletContext().getContextPath() + "/Logout?ID=5";//ID=5 session expired
 		
 		HttpSession session = req.getSession();
+		// if the session is valid
 		if (session.isNew() || session.getAttribute("user") == null) {
-			res.sendRedirect(loginPath);
+			res.sendRedirect(loginPath); // if it is not a valid session, redirect to the login page
 			return;
 		}
 		
 		User user = (User) session.getAttribute("user");
+		// checking if he is admin
 		if(user.isAdmin()) {
-			res.sendRedirect(adminPath);
+			res.sendRedirect(adminPath); // if the user is admin, redirect him to his homepage
 			return;
 		}
 		
 		Date creationDate = new Date(session.getCreationTime());
 		Date todayDate = Calendar.getInstance().getTime();
 		
+		// this will destroy the session at the end of the day 
 		if(!DateUtils.isSameDay(creationDate, todayDate)) {
-			res.sendRedirect(logoutPath);
+			res.sendRedirect(logoutPath); // executing logout
 			return;
 		}
 		

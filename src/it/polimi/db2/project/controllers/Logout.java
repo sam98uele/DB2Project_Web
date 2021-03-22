@@ -20,32 +20,39 @@ public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
     /**
+     * Default constructor
+     * 
      * @see HttpServlet#HttpServlet()
      */
     public Logout() {
-        super();
     }
 
 	/**
 	 * Get session, invalidate it and return to the home page.
-	 *  @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * 
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// getting the session
 		HttpSession session = request.getSession(false);
+		
 		ProductAdminService prodAdminSer;
 		QuestionnaireResponseService qRespSer;
+		
 		if(session != null) {
+			// if the session exists
+			// delete the Stateful EJBs
 			try {
 				prodAdminSer = (ProductAdminService) request.getSession().getAttribute("prodAdminSer");
 				if(prodAdminSer!=null) prodAdminSer.remove();
-			}catch(Exception e) {
-			}
+			} catch(Exception e) { /* do nothing */ }
+			
 			try {
 				qRespSer = (QuestionnaireResponseService) request.getSession().getAttribute("qRespSer");
 				if(qRespSer!=null) qRespSer.remove();
-			}catch(Exception e) {
-			}
+			} catch(Exception e) { /* do nothing */ }
 			
+			// invalidate the session
 			session.invalidate();
 		}
 		
@@ -57,14 +64,9 @@ public class Logout extends HttpServlet {
 			//If there is no ID an exception is trown
 			path = getServletContext().getContextPath() + "/Login";
 		}
-
+		
+		// redirect to the correct path
 		response.sendRedirect(path);
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
+	
 }

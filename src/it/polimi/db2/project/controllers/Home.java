@@ -31,20 +31,31 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 public class Home extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
+	
+	/**
+	 * ProductUserService EJB for the Product of the day
+	 */
 	@EJB(name = "it.polimi.db2.project.services/ProductUserService")
 	private ProductUserService prodUserSer;
+	
+	/**
+	 * UserService for the user
+	 */
 	@EJB(name = "it.polimi.db2.project.services/UserService")
 	private UserService userService;
 
        
     /**
+     * Default constructor
+     * 
      * @see HttpServlet#HttpServlet()
      */
     public Home() {
-        super();
-        // TODO Auto-generated constructor stub
     }
     
+    /**
+     * Initialize the Servlet
+     */
     public void init() throws ServletException {
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
@@ -58,47 +69,41 @@ public class Home extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		// here we search for the product of the day
 		Product prodDay;
 		try {
-			//Search for the product of the day
+			// Search for the product of the day
 			prodDay = prodUserSer.getProductOfTheDay();
 		} catch (NoProductOfTheDayException e) {
-			//Set product of the day null if there is the exception is rised
+			// Set product of the day null if there is the exception is rised
 			prodDay = null;
 		}
 		
-		
+		// setting up the page view
 		String path = "/WEB-INF/Home.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
-		//Load the product of the day in the persistence context, null if there is no product of the day
+		// setting the product of the day in the context, null if there is no product of the day
 		ctx.setVariable("prodDay", prodDay);
 		
-		//Load the Reviews of the product of the day
+		// Load the Reviews of the product of the day
 		List<QuestionnaireResponse> reviews = new IndirectList<>();
 		try {
 			reviews = prodUserSer.getReviewsOfTheProductOfTheDay();
 		}catch(Exception e) {
-			//Do nothing
+			// Do nothing
 		}
+		// setting the reviews in the context
 		ctx.setVariable("reviews", reviews);
 		
-		//Load if the user already answered the questionnaire
+		// Load if the user already answered the questionnaire
 		User user = (User) request.getSession().getAttribute("user");
 		ctx.setVariable("AlreadyAnsweres", userService.answeredToQuestionnaireOfTheDay(user));
 		
+		// rendering the page
 		templateEngine.process(path, ctx, response.getWriter());
-	}
-	
-
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }

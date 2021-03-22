@@ -26,12 +26,16 @@ import it.polimi.db2.project.exceptions.CredentialsException;
 
 
 /**
- * Servlet implementation class Registration
+ * Servlet implementation class Login
  */
 @WebServlet("/Login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
+	
+	/**
+	 * UserService EJB
+	 */
 	@EJB(name = "it.polimi.db2.project.services/UserService")
 	private UserService usrService;
 	
@@ -43,6 +47,11 @@ public class Login extends HttpServlet {
         super();
     }
     
+    /**
+     * Init method
+     * 
+     * @see HttpServlet#HttpServlet()
+     */
     public void init() throws ServletException {
 		ServletContext servletContext = getServletContext();
 		ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
@@ -53,13 +62,19 @@ public class Login extends HttpServlet {
 	}
     
 	/**
+	 * On GET method, we need to display the login page
+	 * 
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	// setting up the variables
     	String path = "login.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		
 		try {
+			// checking if there is a message to display
+			
 			Integer ID = Integer.parseInt(request.getParameter("ID"));
 			if(ID == 5) {
 				//ID=5 session expired
@@ -69,16 +84,22 @@ public class Login extends HttpServlet {
 				//ID=6 registration ok
 				ctx.setVariable("okMessage", "You registered correctly, please login"); 
 			}
+			
 		}catch(Exception e) {
 			//Do nothing, because if there is no id an exception is trown
 		}
+		
+		// rendering the page
 		templateEngine.process(path, ctx, response.getWriter());
     }
 
 	/**
+	 * On POST method we need to perform the Login action
+	 * 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// initializing the variables
 		String usrn = null;
 		String pwd = null;
 		
@@ -90,6 +111,7 @@ public class Login extends HttpServlet {
 				throw new Exception("Missing or empty credential value");
 			}
 		}catch(Exception e) {
+			// rendering the error page
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errorMsg", e.getMessage()); 
@@ -98,11 +120,15 @@ public class Login extends HttpServlet {
 			return;
 		}
 		
+		// Creating the new user object
 		User user;
 		try {
-			//Check the credentials, if correct return the user, else null
+			// Check the credentials, if correct return the user
+			//	else it will throw an exception
 			user = usrService.checkCredentialts(usrn, pwd);
 		}catch(CredentialsException | ApplicationErrorException e) {
+			// if there is an error
+			//	an we render the login page with the error
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errorMsg", e.getMessage());
@@ -111,9 +137,13 @@ public class Login extends HttpServlet {
 			return;
 		}
 		
+		// if everithing is ok
+		// adding the user object to the session
 		request.getSession().setAttribute("user", user);
 		
 		if(user.isAdmin()) {
+			// if the user is admin
+			// we create the admin session with the ProductAdminService statefull bean
 			ProductAdminService prodAdminSer = null;
 			try {
 				// Get the Initial Context for the JNDI lookup for a local EJB
@@ -123,8 +153,11 @@ public class Login extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			// adding the service as an attribute of the session
 			request.getSession().setAttribute("prodAdminSer", prodAdminSer);
 		}else {
+			// if the user is not admin, then it is a user
+			// we create the user session with the QuestionnaireResponseService statefull bean
 			QuestionnaireResponseService qRespSer = null;
 			try {
 				// Get the Initial Context for the JNDI lookup for a local EJB
@@ -134,15 +167,20 @@ public class Login extends HttpServlet {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			// we add the service to the session
 			request.getSession().setAttribute("qRespSer", qRespSer);
 		}
 		
+		// redirect the user to the correct page
 		String path;
-		if(user.isAdmin()) {
+		if(user.isAdmin()) { // if the user is admin, redirect to the Admin homepage
 			path = getServletContext().getContextPath() + "/Admin";
-		}else {
+		}
+		else { // else the user is a normal user, and redirect him to the Home
 			path = getServletContext().getContextPath() + "/Home";
 		}
+		
+		// performin the redirect action
 		response.sendRedirect(path);
 	}
 }

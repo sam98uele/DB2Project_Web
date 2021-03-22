@@ -6,8 +6,11 @@
 </head>
 <body>
 	<h1>Welcome to the Users questionnaire inspection</h1>
-	<fieldset>
-		<h4 th:text="'The answer of the product: ' + ${name} + ' in date: ' + ${date}"></h4>
+	<fieldset th:if="${product == null}">
+		<h4>The specified product does not exists!</h4>
+	</fieldset>
+	<fieldset th:if="${product != null}">
+		<h4 th:text="'The answer of the product: ' + ${product.getName()} + ' in date: ' + ${date}"></h4>
 		<table width="100%">
 			<tr>
 				<td width="50%" valign="top">
@@ -32,7 +35,7 @@
 											<tr th:each="u,i : ${subUsers}">
 												<td th:text="${i.index}" style="text-align: center"></td>
 												<td th:text="${u.getUsername()}" style="text-align: center"></td>
-												<td style="text-align: center"><a th:href="@{/UserAnswerInspection} + '?IDuser=' + ${u.getId()} + '&IDprod=' + ${IDprod} + '&name=' + ${name} + '&date=' + ${date}">Check answers</a></td>
+												<td style="text-align: center"><a th:href="@{/UserAnswerInspection} + '?IDuser=' + ${u.getId()} + '&IDprod=' + ${product.getId()} + '&name=' + ${product.getName()} + '&date=' + ${date}">Check answers</a></td>
 											</tr>
 										</tbody>
 									</table>
