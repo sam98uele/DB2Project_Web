@@ -49,6 +49,7 @@ public class StatQuestions extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Load the QuestionnaireResponseService statefull bean from the session
 		QuestionnaireResponseService qRespSer = (QuestionnaireResponseService) request.getSession().getAttribute("qRespSer");
 		
 		String path = "/WEB-INF/StatQuestions.html";

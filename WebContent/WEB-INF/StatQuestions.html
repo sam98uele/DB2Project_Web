@@ -16,6 +16,7 @@
 			</td>
 		</tr>
 	</table>
+<!-- 	<h4 >You are not allowed to do this</h4> -->	
 	<fieldset>
 		<form action="#" id="stat" th:action="@{/StatQuestions}" method="POST">
 			<table>
@@ -29,8 +30,7 @@
 					<tr>
 						<td>1</td>
 						<td>Age: 
-							<!-- <p><input type="number" name="Age" min="18" max="120" th:value="${stat.getQ1() != null} ? ${stat.getQ1()}"></p> -->
-							<p><input type="number" name="Age" min="18" max="120" th:value="${stat.getQ1() != null && stat.getQ1() != 0} ? ${stat.getQ1()}"></p>
+							<p><input type="number" name="Age" min="18" max="120" th:value="${stat.getQ1() != null} ? ${stat.getQ1()}"></p>
 							<p th:text=" ${ageError}"  class="ErrorMessage"></p>
 					</tr>
 					<tr>

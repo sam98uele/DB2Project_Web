@@ -45,4 +45,13 @@
 	<url-pattern>/UsersQuestionnaireInspection</url-pattern>
 	<url-pattern>/UserAnswerInspection</url-pattern>
 </filter-mapping> 
+<filter>
+ 	<filter-name>LoginAndRegistrationChecker</filter-name> 
+    	<filter-class>it.polimi.db2.project.filters.LoginAndRegistration</filter-class>
+</filter>
+<filter-mapping> 
+	<filter-name>LoginAndRegistrationChecker</filter-name> 
+	<url-pattern>/Login</url-pattern>
+	<url-pattern>/Registration</url-pattern>  
+</filter-mapping> 
 </web-app>

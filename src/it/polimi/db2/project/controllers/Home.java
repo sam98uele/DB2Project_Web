@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.exceptions.NoProductOfTheDayException;
@@ -78,7 +77,7 @@ public class Home extends HttpServlet {
 			// Search for the product of the day
 			prodDay = prodUserSer.getProductOfTheDay();
 		} catch (NoProductOfTheDayException e) {
-			// Set product of the day null if there is the exception is rised
+			// Set product of the day null if there is the exception is thrown
 			prodDay = null;
 		}
 		
