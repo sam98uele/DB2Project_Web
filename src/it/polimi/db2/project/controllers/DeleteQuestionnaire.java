@@ -42,6 +42,6 @@ public class DeleteQuestionnaire extends HttpServlet {
 		}
 		
 		//Redirect to the home page
-		response.sendRedirect(getServletContext().getContextPath() + "/Home?message=Questionnaire cancelled"); //TODO: stampare questo messaggio nella home page
+		response.sendRedirect(getServletContext().getContextPath() + "/Home?cancelMessage=Questionnaire deletion successful"); 
 	}
 }

@@ -115,7 +115,11 @@ public class Home extends HttpServlet {
 		}
 		ctx.setVariable("AlreadyAnsweres", alreadyAnswered); // setting the context variable
 		
-		// rendering the page
+		//Read if there is the cancellation message
+		String cancelMessage = request.getParameter("cancelMessage");
+		ctx.setVariable("cancelMessage", cancelMessage);
+		
+		// render the page
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 

@@ -58,8 +58,6 @@ public class Leaderboard extends HttpServlet {
      *  @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO: Check session ??
-		
 		// getting the leaderboard from the Backend
 		List<User> leaderboard;
 		

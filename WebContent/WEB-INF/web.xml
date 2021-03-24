@@ -42,5 +42,7 @@
 	<url-pattern>/DeleteQuestion</url-pattern> 
 	<url-pattern>/Deletion</url-pattern> 
 	<url-pattern>/Inspection</url-pattern>
+	<url-pattern>/UsersQuestionnaireInspection</url-pattern>
+	<url-pattern>/UserAnswerInspection</url-pattern>
 </filter-mapping> 
 </web-app>

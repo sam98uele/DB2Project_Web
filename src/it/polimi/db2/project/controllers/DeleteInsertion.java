@@ -21,7 +21,6 @@ public class DeleteInsertion extends HttpServlet {
      */
     public DeleteInsertion() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -35,7 +34,7 @@ public class DeleteInsertion extends HttpServlet {
 		//Remove the product while you are still creating it
 		prodAdminSer.undoCreation();
 		
-		//Redirect to the home page, with the message TODO: message your product is been removed correctly
+		//Redirect to the home page, with the message
 		response.sendRedirect(getServletContext().getContextPath() + "/Admin?insertionMessage=Your product has been deleted successfully");
 	}
 
