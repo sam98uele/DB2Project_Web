@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.services.QuestionnaireResponseService;
 
 /**
@@ -29,7 +30,13 @@ public class DeleteQuestionnaire extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		QuestionnaireResponseService qRespSer = (QuestionnaireResponseService) request.getSession().getAttribute("qRespSer");
 		
-		qRespSer.cancel();
+		try {
+			qRespSer.cancel();
+		} catch (ApplicationErrorException e) {
+			// display 500 error
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return;
+		}
 		
 		response.sendRedirect(getServletContext().getContextPath() + "/Home?message=Questionnaire cancelled");
 	}
