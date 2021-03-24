@@ -24,13 +24,17 @@ public class DeleteQuestionnaire extends HttpServlet {
     }
 
 	/**
+	 * Handle the questionnaire cancellation and redirect to the home page
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Get the QuestionnaireResponseService statefull bean from the session
 		QuestionnaireResponseService qRespSer = (QuestionnaireResponseService) request.getSession().getAttribute("qRespSer");
 		
+		//Call the questionnaire cancellation
 		qRespSer.cancel();
 		
-		response.sendRedirect(getServletContext().getContextPath() + "/Home?message=Questionnaire cancelled");
+		//Redirect to the home page
+		response.sendRedirect(getServletContext().getContextPath() + "/Home?message=Questionnaire cancelled"); //TODO: stampare questo messaggio nella home page
 	}
 }
