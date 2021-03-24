@@ -25,12 +25,14 @@ public class DeleteInsertion extends HttpServlet {
     }
 
 	/**
+	 * Remove the product while you are still creating it (cancel all in the creation page) (Insert a product)
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Load the productAdminService statefull bean from the session
 		ProductAdminService prodAdminSer = (ProductAdminService) request.getSession().getAttribute("prodAdminSer");
 		
-		//Remove the product
+		//Remove the product while you are still creating it
 		prodAdminSer.undoCreation();
 		
 		//Redirect to the home page, with the message TODO: message your product is been removed correctly

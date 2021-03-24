@@ -31,8 +31,9 @@
 					<p th:text="${prodDay.getDescription()}"></p>
 					<hr>
 					<div th:if="${prodDay!=null}">
-						<a th:href="@{/Questionnaire}" th:if="${!AlreadyAnsweres}">Answer the questions</a> <!-- TODO if -->
-						<p th:if="${AlreadyAnsweres}">You already answered the questions</p> <!-- TODO if  -->
+						<a th:href="@{/Questionnaire}" th:if="${!AlreadyAnsweres}">Answer the questions</a>
+						<p th:if="${AlreadyAnsweres}">You already answered the questions</p>
+						<p th:text="${cancelMessage}" class="okMessage"></p>
 					</div>	
 				</td>
 			</tr>
@@ -69,17 +70,20 @@
 						<td  style="border-top: 1px solid black">
 							<table>
 								<tr>
-									<td th:text="'Age: ' + ${r.getStatisticalAnswers().getQ1()}"></td>
+									<td th:if="${r.getStatisticalAnswers().getQ1() == null}">Age: Not specified</td>
+									<td th:if="${r.getStatisticalAnswers().getQ1() != null}" th:text="'Age: ' + ${r.getStatisticalAnswers().getQ1()}"></td>
 								</tr>
 								<tr>
-									<td th:if="${r.getStatisticalAnswers().getQ2() == 0}">Sex: male</td>
-									<td th:if="${r.getStatisticalAnswers().getQ2() == 1}">Sex: female</td>
-									<td th:if="${r.getStatisticalAnswers().getQ2() == 2}">Sex: undefined</td>
+									<td th:if="${r.getStatisticalAnswers().getQ2() == null}">Sex: Not specified</td>
+									<td th:if="${r.getStatisticalAnswers().getQ2() == 1}">Sex: male</td>
+									<td th:if="${r.getStatisticalAnswers().getQ2() == 2}">Sex: female</td>
+									<td th:if="${r.getStatisticalAnswers().getQ2() == 3}">Sex: undefined</td>
 								</tr>
 								<tr>
-									<td th:if="${r.getStatisticalAnswers().getQ2() == 0}">Experience: low</td>
-									<td th:if="${r.getStatisticalAnswers().getQ2() == 1}">Experience: medium</td>
-									<td th:if="${r.getStatisticalAnswers().getQ2() == 2}">Experience: high</td>
+									<td th:if="${r.getStatisticalAnswers().getQ3() == null}">Experience: Not specified</td>
+									<td th:if="${r.getStatisticalAnswers().getQ3() == 1}">Experience: low</td>
+									<td th:if="${r.getStatisticalAnswers().getQ3() == 2}">Experience: medium</td>
+									<td th:if="${r.getStatisticalAnswers().getQ3() == 3}">Experience: high</td>
 									<!-- <td th:text="'Experience: '+ ${r.getStatisticalAnswers().getQ3() == 0}? 'low' : '' +
 															   ${r.getStatisticalAnswers().getQ3() == 1}? 'medium' : '' + 
 															   ${r.getStatisticalAnswers().getQ3() == 2}? 'high' : ''"></td>

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.exceptions.NoProductOfTheDayException;
 import it.polimi.db2.project.services.ProductUserService;
 import it.polimi.db2.project.services.UserService;
@@ -100,7 +101,16 @@ public class Home extends HttpServlet {
 		
 		// Load if the user already answered the questionnaire
 		User user = (User) request.getSession().getAttribute("user");
-		ctx.setVariable("AlreadyAnsweres", userService.answeredToQuestionnaireOfTheDay(user));
+		boolean alreadyAnswered;
+		try {
+			alreadyAnswered = userService.answeredToQuestionnaireOfTheDay(user);
+		}
+		catch (ApplicationErrorException e) {
+			// if there are some problems internal to the server
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return;
+		}
+		ctx.setVariable("AlreadyAnsweres", alreadyAnswered); // setting the context variable
 		
 		// rendering the page
 		templateEngine.process(path, ctx, response.getWriter());

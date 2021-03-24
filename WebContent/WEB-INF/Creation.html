@@ -1,12 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" media="all" href="../css/style.css" th:href="@{/css/style.css}" />	
 	<meta charset="ISO-8859-1">
 	<title>Insert title here</title>
-	<link rel="stylesheet" type="text/css" media="all" href="../css/style.css" th:href="@{/css/style.css}" />	
 </head>
 <body>
-	<h1>Admin creation page</h1>
+	<table width="100%">
+		<tr>
+			<td width="70%">
+				<h1>Admin creation page</h1>
+			</td>
+			<td width="30%" style="text-align: right">
+				<a th:href="@{/Home}">Home</a>
+				<a th:href="@{/Logout}">Logout</a>
+			</td>
+		</tr>
+	</table>
 	<fieldset>
 		<div>
 			<p>Add the product</p>
@@ -16,7 +26,7 @@
 				<p>Date: <input type="date" name="date" th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" placeholder="yyyy-mm-dd" /></p>
 				<p>Image: <input type="file" id="image" name="image"></p>
 				<input type="submit" name="InsertProduct" value="Insert the Product">
-				<p th:text=" ${errorMessage}" class="ErrorMessage"></p>
+				<p th:text=" ${errorMessageProduct}" class="ErrorMessage"></p>
 			</form>
 			<div th:if="${product!=null}">
 				<p>Name: <input type="text" disabled th:value="${product.getName()}" /></p>
@@ -48,6 +58,9 @@
 							<td><textarea name="question" rows="2" cols="40"></textarea></td>
 							<td><input type="Submit" name="Add" value="Add question"></td>
 						</tr>
+						<tr>
+							<td th:text=" ${errorQuestion}" class="ErrorMessage"></td>
+						</tr>
 					</tbody>
 				</table>
 			</form>
@@ -55,6 +68,7 @@
 			
 			<form action="#" method="POST">
 				<input type="Submit" name="Insert" value="Send all">
+				<p th:text=" ${errorSave}" class="ErrorMessage"></p>
 			</form>
 		</div>
 		

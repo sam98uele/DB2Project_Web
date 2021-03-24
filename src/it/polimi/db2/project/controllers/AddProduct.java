@@ -4,7 +4,6 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -37,10 +36,10 @@ public class AddProduct extends HttpServlet {
     }
 
 	/**
+	 * Handle when an admin insert a product to the questionnaire
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//TODO: check if is login and is admin, otherwise return or to the login page, or to the home page of a standard user.
 		String name = null;
 		String description = null;
 		Date date = null;
@@ -66,27 +65,31 @@ public class AddProduct extends HttpServlet {
 			InputStream imgContent = imgFile.getInputStream();
 			image = ImageUtils.readImage(imgContent);
 			
-			//Check if everything is ok, otherwise throw and exception
+			//Check if everything is OK, otherwise throw and exception
 			if (name == null || description == null || name.isEmpty() || description.isEmpty() || image == null || image.length == 0) {
 				throw new Exception("Input error!");
 			}
 		}catch(Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
+			//Redirect to the Creation page with the error
 			response.sendRedirect(getServletContext().getContextPath() + "/Creation?error=" + e.getMessage() + "");
 			return;
 		}
 		
+		//Get the productAdminService from the session
 		ProductAdminService prodAdminSer = (ProductAdminService) request.getSession().getAttribute("prodAdminSer");
 		
 		try {
 			//Add the product
 			prodAdminSer.addProduct(name, image, date, description);
 		}catch(ProductException | InvalidInputArgumentException | PermissionDeniedException e){
-			e.printStackTrace();
+			//e.printStackTrace();
+			//Redirect to the Creation page with the error
 			response.sendRedirect(getServletContext().getContextPath() + "/Creation?error=" + e.getMessage() + "");
 			return;
 		}
 		
+		//All OK redirect to the creation page
 		response.sendRedirect(getServletContext().getContextPath() + "/Creation");
 	}
 }

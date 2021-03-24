@@ -17,7 +17,6 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.project.services.ProductService;
 import it.polimi.db2.project.services.QuestionnaireAdminService;
-import it.polimi.db2.project.services.UserService;
 
 /**
  * Servlet implementation class Inspection
@@ -27,9 +26,17 @@ public class Inspection extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	
+	/**
+	 * QuestionnaireAdminService EJB
+	 * Contains all the services to manage the questions Admin Side
+	 */
 	@EJB(name = "it.polimi.db2.project.services/QuestionnaireAdminService")
 	private QuestionnaireAdminService questAdminSer;
 	
+	/**
+	 * ProductService EJB
+	 * To manage the product
+	 */
 	@EJB(name = "it.polimi.db2.project.services/ProductService")
 	private ProductService prodSer;
        
@@ -53,22 +60,21 @@ public class Inspection extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// Load the page 
 		String path = "/WEB-INF/Inspection.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+		
+		//Set the past products
 		try {
 			ctx.setVariable("pastProd", prodSer.getPastScheduledProductOfTheDay());
 		}catch(Exception e) {
-			//TODO handle
+			// if there are problems in retrieving the product
+			// display a 500 error
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return;
 		}
+		
 		templateEngine.process(path, ctx, response.getWriter());
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request, response);
-	}
-
 }

@@ -2,8 +2,6 @@ package it.polimi.db2.project.controllers;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -19,7 +17,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.project.entities.Product;
-import it.polimi.db2.project.entities.User;
 import it.polimi.db2.project.exceptions.ProductException;
 import it.polimi.db2.project.services.ProductService;
 import it.polimi.db2.project.services.QuestionnaireAdminService;
@@ -90,10 +87,10 @@ public class UsersQuestionnaireInspection extends HttpServlet {
 		Product product;
 		try {
 			product = prodSer.getProductById(ID);
-		} catch (ProductException e1) {
+		} catch (ProductException e) {
 			// if there are problems in retrieving the product
-			// display a 400 error
-			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e1.getMessage());
+			// display a 500 error
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 			return;
 		}
 		

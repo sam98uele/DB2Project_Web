@@ -84,9 +84,15 @@ public class Login extends HttpServlet {
 				//ID=6 registration ok
 				ctx.setVariable("okMessage", "You registered correctly, please login"); 
 			}
+			if(ID == 7) {
+				//ID=7 user blocked
+				ctx.setVariable("errorMsg", "You have inserted a bad word! Your account has been blocked!"); 
+			}
 			
 		}catch(Exception e) {
 			//Do nothing, because if there is no id an exception is trown
+			//If the ID is a string (null pointer exception) it is not a problem because it is not handled, 
+			//so it is OK to do nothing
 		}
 		
 		// rendering the page
@@ -132,6 +138,17 @@ public class Login extends HttpServlet {
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errorMsg", e.getMessage());
+			String path = "login.html";
+			templateEngine.process(path, ctx, response.getWriter());
+			return;
+		}
+		
+		// Check is the user is blocked
+		if(user.isBlocked()) {
+			// Return the message that he is blocked
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("errorMsg", "This account is blocked");
 			String path = "login.html";
 			templateEngine.process(path, ctx, response.getWriter());
 			return;

@@ -2,7 +2,6 @@ package it.polimi.db2.project.controllers;
 
 import java.io.IOException;
 
-import javax.ejb.EJB;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,6 +42,10 @@ public class Creation extends HttpServlet {
 	}
 
 	/**
+	 * Print the creation page with the relative errors if they exists.
+	 * err = is the error in the insertion of the product
+	 * err2 = error in the saving of the product
+	 * err3 = error in the submission of a question
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -52,31 +55,41 @@ public class Creation extends HttpServlet {
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		ctx.setVariable("product", prodAdminSer.getProduct());
-		try {
-			String err = request.getParameter("error");
-			ctx.setVariable("errorMessage", err);
-		}catch(Exception e) {
-			//Do nothing, this means that no variables exists
-		}
+
+		//If there is an error in the insertion of the product, print the error passed
+		String err = request.getParameter("error");
+		ctx.setVariable("errorMessageProduct", err);
+
+		//If there is an error in the saving of the product, print the error passed
+		String err2 = request.getParameter("errorSave");
+		ctx.setVariable("errorSave", err2);
+
+		//If there is an error in the submission of a question
+		String err3 = request.getParameter("errorQuestion");
+		ctx.setVariable("errorQuestion", err3);
+
 		templateEngine.process(path, ctx, response.getWriter());
 	}
 
 	/**
+	 * Request to save the product created, if something goes wrong redirect to the creation page with the error.
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		//Load ProductAdminService statefull bean from the session
 		ProductAdminService prodAdminSer = (ProductAdminService) request.getSession().getAttribute("prodAdminSer");
 		
 		//When the person save the product and the questions
 		try {
 			prodAdminSer.saveProduct();
 		} catch (ProductException e) {
-			// TODO Implement catch
-			e.printStackTrace();
+			//e.printStackTrace();
+			//Redirect to the creation page with the respective error
+			response.sendRedirect(getServletContext().getContextPath() + "/Creation?errorSave=" + e.getMessage() + "");
+			return;
 		}
 		
-		//Redirect to the home page
+		//Redirect to the home page with the message that all went fine
 		response.sendRedirect(getServletContext().getContextPath() + "/Admin?insertionMessage=Your product has been inserted successfully");
 
 	}

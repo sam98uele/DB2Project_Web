@@ -3,7 +3,6 @@ package it.polimi.db2.project.filters;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;

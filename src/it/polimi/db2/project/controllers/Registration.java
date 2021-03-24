@@ -94,7 +94,7 @@ public class Registration extends HttpServlet {
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errorMsg", e.getMessage()); 
-			String path = "registration.html";
+			String path = "/WEB-INF/Registration.html";
 			templateEngine.process(path, ctx, response.getWriter());
 			return;
 		}
@@ -108,7 +108,7 @@ public class Registration extends HttpServlet {
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errorMsg", e.getMessage()); 
-			String path = "registration.html";
+			String path = "/WEB-INF/Registration.html";
 			templateEngine.process(path, ctx, response.getWriter());
 			return;
 		}

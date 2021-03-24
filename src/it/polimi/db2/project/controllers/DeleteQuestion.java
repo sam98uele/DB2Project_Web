@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import it.polimi.db2.project.exceptions.InvalidInputArgumentException;
 import it.polimi.db2.project.services.ProductAdminService;
 
 /**
@@ -27,21 +28,22 @@ public class DeleteQuestion extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		//Load ProductAdminService statefull bean from the session
 		ProductAdminService prodAdminSer = (ProductAdminService) request.getSession().getAttribute("prodAdminSer");
 		
 		Integer questionId;
 		
 		try {
 			questionId = Integer.parseInt(request.getParameter("questionId"));
-		}catch(Exception e) {
-			e.printStackTrace();
+			
+			//Remove the question
+			prodAdminSer.deleteMarketingQuestion(questionId);
+		}catch(InvalidInputArgumentException | NumberFormatException e) {
+			//e.printStackTrace();
+			//handle number format exception and InvalidInputArgumentException deleting nothing
 			response.sendRedirect(getServletContext().getContextPath() + "/Creation");
 			return;
 		}
-		
-		//Remove the question
-		prodAdminSer.deleteMarketingQuestion(questionId);
 		
 		//Redirect to the creation page.
 		response.sendRedirect(getServletContext().getContextPath() + "/Creation");

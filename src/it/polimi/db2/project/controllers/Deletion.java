@@ -15,6 +15,7 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
+import it.polimi.db2.project.entities.Product;
 import it.polimi.db2.project.exceptions.InvalidActionException;
 import it.polimi.db2.project.exceptions.ProductException;
 import it.polimi.db2.project.services.ProductService;
@@ -28,9 +29,17 @@ public class Deletion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
 	
+	/**
+	 * QuestionnaireAdminService EJB
+	 * Contains all the services to manage the questions Admin Side
+	 */
 	@EJB(name = "it.polimi.db2.project.services/QuestionnaireAdminService")
 	private QuestionnaireAdminService questAdminSer;
 	
+	/**
+	 * ProductService EJB
+	 * To manage the product
+	 */
 	@EJB(name = "it.polimi.db2.project.services/ProductService")
 	private ProductService prodSer;
        
@@ -51,43 +60,47 @@ public class Deletion extends HttpServlet {
 	}
     
 	/**
+	 * Handle the deletion requests with the related errors, an ID is in the get request parameters. Otherwise only the page is printed.
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Check the session
 		String path = "/WEB-INF/Deletion.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		
+		Product p = null;
 		try {
-			Integer ID = Integer.parseInt(request.getParameter("ID"));
-			
-			String name=  prodSer.getProductById(ID).getName();
+			//Get the id passed in the get if it exists
+			Integer ID = null;
+			if(request.getParameter("ID")!=null) {
+				ID = Integer.parseInt(request.getParameter("ID"));
 				
-			questAdminSer.deleteQuestionnaires(ID);	
-				
-				
-			ctx.setVariable("okMessage", "Product " + name + " is been deleted correctly"); 
+				//Delete the questionnaire and it will return the deleted product
+				p = questAdminSer.deleteQuestionnaires(ID);
+			}	
 		}catch(InvalidActionException | ProductException e) {
+			//e.printStackTrace();
+			//Handle the exception thrown by the deletion
 			ctx.setVariable("errorMsg", e.getMessage()); 
-		}catch(Exception e) {
-			//Do nothing, because if there is no id an exception is thrown, so there are no product to delete
-		}
+		}catch(NumberFormatException e) {
+			//e.printStackTrace();
+			//Handle the exception of the parteInd
+			ctx.setVariable("errorMsg", "The ID is not correct"); 
+		}		
+		
+		//If the product is not null this means that the deletion went fine
+		if(p!=null) ctx.setVariable("okMessage", "Product " + p.getName() + " is been deleted correctly"); 
 		
 		try {
+			//Retrieve the list of all the past products
 			ctx.setVariable("pastProd", prodSer.getPastScheduledProductOfTheDay());
 		}catch(Exception e) {
-			//TODO handle
+			//e.printStackTrace();
+			//Handle all the other errors
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return;
 		}
 		
 		templateEngine.process(path, ctx, response.getWriter());
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			doGet(request, response);
-	}
-
 }

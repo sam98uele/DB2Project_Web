@@ -1,11 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" type="text/css" media="all" href="../css/style.css" th:href="@{/css/style.css}" />	
 	<meta charset="ISO-8859-1">
 	<title>Insert title here</title>
 </head>
 <body>
-	<h1>Statistical questions</h1>
+	<table width="100%">
+		<tr>
+			<td width="70%">
+				<h1>Statistical questions</h1>
+			</td>
+			<td width="30%" style="text-align: right">
+				<a th:href="@{/Logout}">Logout</a>
+			</td>
+		</tr>
+	</table>
 	<fieldset>
 		<form action="#" id="stat" th:action="@{/StatQuestions}" method="POST">
 			<table>
@@ -19,33 +29,38 @@
 					<tr>
 						<td>1</td>
 						<td>Age: 
-							<p><input type="number" name="Age" min="18" max="120" th:value="${stat.getQ1() != null} ? ${stat.getQ1()}"></p>
+							<!-- <p><input type="number" name="Age" min="18" max="120" th:value="${stat.getQ1() != null} ? ${stat.getQ1()}"></p> -->
+							<p><input type="number" name="Age" min="18" max="120" th:value="${stat.getQ1() != null && stat.getQ1() != 0} ? ${stat.getQ1()}"></p>
+							<p th:text=" ${ageError}"  class="ErrorMessage"></p>
 					</tr>
 					<tr>
 						<td>2</td>
 						<td>Sex: 
 							<p><select name="sex">
-								<option value="" disabled hidden selected>Choose</option>
-								<option value="0" th:selected="${stat.getQ2() != null && stat.getQ2()==0}">Male</option>
-								<option value="1" th:selected="${stat.getQ2() != null && stat.getQ2()==1}">Female</option>
-								<option value="2" th:selected="${stat.getQ2() != null && stat.getQ2()==2}">Undefined</option>
+								<option value="0" hidden selected>Choose</option>
+								<option value="1" th:selected="${stat.getQ2() != null && stat.getQ2()==1}">Male</option>
+								<option value="2" th:selected="${stat.getQ2() != null && stat.getQ2()==2}">Female</option>
+								<option value="3" th:selected="${stat.getQ2() != null && stat.getQ2()==3}">Undefined</option>
 							</select></p>
+							<p th:text=" ${sexError}"  class="ErrorMessage"></p>
 						</td>
 					</tr>
 					<tr>
 						<td>3</td>
 						<td>Expertise level: 
 							<p><select name="level">
-								<option value="" disabled hidden selected>Choose</option>
-								<option value="0" th:selected="${stat.getQ3() != null && stat.getQ3()==0}">Low</option>
-								<option value="1" th:selected="${stat.getQ3() != null && stat.getQ3()==1}">Medium</option>
-								<option value="2" th:selected="${stat.getQ3() != null && stat.getQ3()==2}">High</option>
+								<option value="0" hidden selected>Choose</option>
+								<option value="1" th:selected="${stat.getQ3() != null && stat.getQ3()==1}">Low</option>
+								<option value="2" th:selected="${stat.getQ3() != null && stat.getQ3()==2}">Medium</option>
+								<option value="3" th:selected="${stat.getQ3() != null && stat.getQ3()==3}">High</option>
 							</select></p>
+							<p th:text=" ${expertiseError}"  class="ErrorMessage"></p>
 						</td>
 					</tr>
 					</tbody>
 			</table>
 			<input type="Submit" name="submit" value="Submit the form">
+			<p th:text=" ${submitError}"  class="ErrorMessage"></p>
 			<input type="Submit" name="marketingQuestions" value="Return to marketing questions">
 		</form>
 		<button th:onclick="'location.href=\'' + @{/DeleteQuestionnaire} + '\''" >Cancel all</button>

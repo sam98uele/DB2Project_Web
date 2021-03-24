@@ -5,22 +5,32 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Welcome to the LEADERBOARD</h1>
-		<table th:if="${leaderboard != null}">
-				<thead>
-					<tr>
-						<th>Position</th>
-						<th>User</th>
-						<th>Points</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="p,i : ${leaderboard}">
-						<td><p th:text="${i.index+1}"></p></td>
-						<td><p th:text="${p.getUsername()}"></p></td>
-						<td><p th:text="${p.getPoints()}"></p></td>
-					</tr>
-				</tbody>
-		</table>
+	<table width="100%">
+		<tr>
+			<td width="70%">
+				<h1>Welcome to the LEADERBOARD</h1>
+			</td>
+			<td width="30%" style="text-align: right">
+				<a th:href="@{/Home}">Home</a>
+				<a th:href="@{/Logout}">Logout</a>
+			</td>
+		</tr>
+	</table>
+	<table th:if="${leaderboard != null}">
+			<thead>
+				<tr>
+					<th>Position</th>
+					<th>User</th>
+					<th>Points</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="p,i : ${leaderboard}">
+					<td><p th:text="${i.index+1}"></p></td>
+					<td><p th:text="${p.getUsername()}"></p></td>
+					<td><p th:text="${p.getPoints()}"></p></td>
+				</tr>
+			</tbody>
+	</table>
 </body>
 </html>

@@ -6,8 +6,21 @@
 	<title>Insert title here</title>
 </head>
 <body>
-	<h1>Admin deletion page</h1>
-	<fieldset>
+	<table width="100%">
+		<tr>
+			<td width="70%">
+				<h1>Admin deletion page</h1>
+			</td>
+			<td width="30%" style="text-align: right">
+				<a th:href="@{/Home}">Home</a>
+				<a th:href="@{/Logout}">Logout</a>
+			</td>
+		</tr>
+	</table>
+	<h4 th:if="${pastProd.size()==0}">There are not past product to display</h4>
+	<p th:if="${pastProd.size()==0}" th:text=" ${errorMsg}"  class="ErrorMessage"></p>
+	<p th:if="${pastProd.size()==0}" th:text="${okMessage}" class="okMessage"></p>
+	<fieldset th:if="${pastProd.size()!=0}">
 		<h4>This is the list of the past questionnaire</h4>
 		<p th:text=" ${errorMsg}"  class="ErrorMessage"></p>
 		<p th:text="${okMessage}" class="okMessage"></p>
