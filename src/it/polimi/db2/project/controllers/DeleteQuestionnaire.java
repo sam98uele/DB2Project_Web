@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.services.QuestionnaireResponseService;
 
 /**
@@ -32,7 +33,13 @@ public class DeleteQuestionnaire extends HttpServlet {
 		QuestionnaireResponseService qRespSer = (QuestionnaireResponseService) request.getSession().getAttribute("qRespSer");
 		
 		//Call the questionnaire cancellation
-		qRespSer.cancel();
+		try {
+			qRespSer.cancel();
+		} catch (ApplicationErrorException e) {
+			// display 500 error
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return;
+		}
 		
 		//Redirect to the home page
 		response.sendRedirect(getServletContext().getContextPath() + "/Home?message=Questionnaire cancelled"); //TODO: stampare questo messaggio nella home page
