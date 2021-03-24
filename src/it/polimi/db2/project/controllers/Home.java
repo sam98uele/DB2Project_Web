@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.exceptions.NoProductOfTheDayException;
@@ -89,10 +90,13 @@ public class Home extends HttpServlet {
 		// setting the product of the day in the context, null if there is no product of the day
 		ctx.setVariable("prodDay", prodDay);
 		
+		// getting the user from the session
+		User user = (User) request.getSession().getAttribute("user");
+		
 		// Load the Reviews of the product of the day
 		List<QuestionnaireResponse> reviews = new IndirectList<>();
 		try {
-			reviews = prodUserSer.getReviewsOfTheProductOfTheDay();
+			reviews = prodUserSer.getReviewsOfTheProductOfTheDay(user.getId());
 		}catch(Exception e) {
 			// Do nothing
 		}
@@ -100,7 +104,6 @@ public class Home extends HttpServlet {
 		ctx.setVariable("reviews", reviews);
 		
 		// Load if the user already answered the questionnaire
-		User user = (User) request.getSession().getAttribute("user");
 		boolean alreadyAnswered;
 		try {
 			alreadyAnswered = userService.answeredToQuestionnaireOfTheDay(user);
