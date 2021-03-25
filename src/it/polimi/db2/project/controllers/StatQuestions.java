@@ -52,11 +52,17 @@ public class StatQuestions extends HttpServlet {
 		//Load the QuestionnaireResponseService statefull bean from the session
 		QuestionnaireResponseService qRespSer = (QuestionnaireResponseService) request.getSession().getAttribute("qRespSer");
 		
-		String path = "/WEB-INF/StatQuestions.html";
-		ServletContext servletContext = getServletContext();
-		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-		ctx.setVariable("stat", qRespSer.getResponseStat());
-		templateEngine.process(path, ctx, response.getWriter());
+		//The questionnaire is not yet initialized, so redirect to the questionnaire page
+		if(qRespSer.getResponse() != null) {
+			String path = "/WEB-INF/StatQuestions.html";
+			ServletContext servletContext = getServletContext();
+			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+			ctx.setVariable("stat", qRespSer.getResponseStat());
+			templateEngine.process(path, ctx, response.getWriter());
+		} else {
+			//This means that the questionnaire is not yet started (initialized)
+			response.sendRedirect(getServletContext().getContextPath() + "/Questionnaire");
+		}
 	}
 
 	/**
