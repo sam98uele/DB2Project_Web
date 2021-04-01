@@ -63,7 +63,7 @@
 								<tr th:each="q, i : ${r.getOrderedMarketingAnswers()}">
 									<td>
 										<p th:text = "'Q' + ${i.index + 1} + ': ' + ${q.getQuestion().getQuestion()}"></p>
-										<p th:text = "'Answer: ' + ${q.getAnswer().replaceAll('\\x5c\\x72\\x5c\\x6e', '. ')}"></p>
+										<p th:text = "'Answer: ' + ${q.getAnswer().replaceAll('\\x5c\\x72\\x5c\\x6e', ' ')}"></p>
 									</td>
 								</tr>
 							</table>
