@@ -96,7 +96,7 @@ public class UserAnswerInspection extends HttpServlet {
 		
 		// if the response is not null, we can ge the parameters of it
 		if(quest_response != null) {
-			ctx.setVariable("markAns", quest_response.getMarketingAnswers());
+			ctx.setVariable("markAns", quest_response.getOrderedMarketingAnswers());
 			ctx.setVariable("statAns", quest_response.getStatisticalAnswers());
 			ctx.setVariable("user", quest_response.getUser().getUsername());
 		}
