@@ -14,11 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import javax.servlet.http.Part;
 
+import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.exceptions.InvalidInputArgumentException;
 import it.polimi.db2.project.exceptions.PermissionDeniedException;
 import it.polimi.db2.project.exceptions.ProductException;
 import it.polimi.db2.project.services.ProductAdminService;
-import it.polimi.db2.project.utils.*;
+import it.polimi.db2.project.util.*;
+import it.polimi.db2.project.utils.ImageUtils;
 
 /**
  * Servlet implementation class AddProduct
@@ -86,6 +88,10 @@ public class AddProduct extends HttpServlet {
 			//e.printStackTrace();
 			//Redirect to the Creation page with the error
 			response.sendRedirect(getServletContext().getContextPath() + "/Creation?error=" + e.getMessage() + "");
+			return;
+		} catch (ApplicationErrorException e) {
+			// If an application error occurred, returning 500 error
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 			return;
 		}
 		

@@ -19,6 +19,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.project.entities.MarketingAnswer;
 import it.polimi.db2.project.entities.User;
+import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.exceptions.InvalidActionException;
 import it.polimi.db2.project.exceptions.NoProductOfTheDayException;
 import it.polimi.db2.project.services.QuestionnaireResponseService;
@@ -69,6 +70,10 @@ public class Questionnaire extends HttpServlet {
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 			ctx.setVariable("errorMsg", e.getMessage()); 
 			templateEngine.process(path, ctx, response.getWriter());
+			return;
+		} catch (ApplicationErrorException e) {
+			// If an application error occurred, returning 500 error
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 			return;
 		}
 		

@@ -17,7 +17,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.project.entities.QuestionnaireResponse;
-import it.polimi.db2.project.exceptions.QueryException;
+import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.services.QuestionnaireAdminService;
 
 /**
@@ -85,7 +85,7 @@ public class UserAnswerInspection extends HttpServlet {
 		try {			
 			quest_response = questAdminSer.getAllQuestionnaireAnsweredBySpecificUserAndProduct(IDuser, IDprod);
 		}
-		catch (QueryException e) {
+		catch (ApplicationErrorException e) {
 			// 500 error if problems during the execution
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
 			return;
