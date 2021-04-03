@@ -61,7 +61,7 @@ public class Questionnaire extends HttpServlet {
 		//Start the questionnaire for the user
 		//The product cannot exist or the user can already have answered the questionnaire
 		try {
-			qRespSer.startQuestionnaire(user);
+			if(qRespSer.getResponse() == null) qRespSer.startQuestionnaire(user);
 		} catch (NoProductOfTheDayException | InvalidActionException e) {
 			//Print the error if there is no questionnaire or the questionnaire is already answered
 			//e.printStackTrace();
