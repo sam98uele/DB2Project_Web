@@ -34,8 +34,8 @@
 							<table width = "100%">
 								<tr th:each="q, i : ${markAns}">
 									<td>
-										<p style="text-align: center" th:text = "'Q' + ${i.index + 1} + ': ' + ${q.getQuestion().getQuestion()}"></p>
-										<p style="text-align: center" th:text = "'Answer: ' + ${q.getAnswer().replaceAll('\\x5c\\x72\\x5c\\x6e', ' ')}"></p>
+										<p style="text-align: center" th:utext = "'Q' + ${i.index + 1} + ': ' + ${q.getQuestion().getQuestion().replaceAll('\r\n', '<br>')}"></p>
+										<p style="text-align: center" th:utext = "'Answer: ' + ${q.getAnswer().replaceAll('\r\n', '<br>')}"></p>
 									</td>
 								</tr>
 							</table>

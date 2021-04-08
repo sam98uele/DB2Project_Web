@@ -49,10 +49,11 @@ public class AddProduct extends HttpServlet {
 		
 		try {
 			//Read the name of the product from the form
-			name = StringEscapeUtils.escapeJava(request.getParameter("name"));
+			name = request.getParameter("name").replaceAll("\r\n", " ");
 			
 			//Read the description of the product from the form
-			description = StringEscapeUtils.escapeJava(request.getParameter("description"));
+			//No backspace allowed
+			description = request.getParameter("description").replaceAll("\r\n", " ");
 			
 			//Read the date
 			try {

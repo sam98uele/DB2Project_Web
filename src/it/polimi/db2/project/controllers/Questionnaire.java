@@ -46,6 +46,7 @@ public class Questionnaire extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
+		templateResolver.setCharacterEncoding("UTF-8");
 	}
 
 	/**
@@ -105,7 +106,8 @@ public class Questionnaire extends HttpServlet {
 			MarketingAnswer questResp = new MarketingAnswer();
 			
 			//Read the i-th form
-			questResp.setAnswer(StringEscapeUtils.escapeJava(request.getParameter("quest" + i.toString())));
+			String answ = request.getParameter("quest" + i.toString());
+			questResp.setAnswer(answ);
 			
 			//Append to the list the answer
 			marketingAnswers.add(questResp);

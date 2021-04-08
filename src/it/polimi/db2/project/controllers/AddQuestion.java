@@ -35,7 +35,7 @@ public class AddQuestion extends HttpServlet {
 		String question;
 		try {
 			//Get the question from the request
-			question = StringEscapeUtils.escapeJava(request.getParameter("question"));
+			question = request.getParameter("question");
 			
 			//Check if the string is null or empty, if it is raise an exception
 			if(question == null || question.isEmpty()) {

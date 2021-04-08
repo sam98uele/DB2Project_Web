@@ -49,7 +49,7 @@
 					</thead>
 					<tbody th:if="${product!=null}">
 						<tr th:each="q,i : ${product.getMarketingQuestions()}">
-							<td th:text="${q.getQuestion()}"></td>
+							<td th:utext="${q.getQuestion().replaceAll('\r\n', '<br>')}"></td>
 							<td><a th:href="@{/DeleteQuestion(questionId=${i.index})}">Delete</a></td>
 						</tr>
 					</tbody>
