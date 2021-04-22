@@ -18,6 +18,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.project.exceptions.RegistrationException;
 import it.polimi.db2.project.services.UserService;
+import it.polimi.db2.project.utils.EmailValidator;
 
 //import it.polimi.db2.project.services.UserService;
 
@@ -89,6 +90,9 @@ public class Registration extends HttpServlet {
 			if (usrn == null || pwd == null || usrn.isEmpty() || pwd.isEmpty() || email == null || email.isEmpty()) {
 				throw new Exception("Missing or empty credential value");
 			}
+			
+			//Check is the email is valid, otherwise throw and exception
+			EmailValidator.emailValidator(email);
 		}catch(Exception e) {
 			// if there are some problems, we render the error page
 			ServletContext servletContext = getServletContext();

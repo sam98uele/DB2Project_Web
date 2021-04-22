@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import javax.servlet.http.Part;
 
 import it.polimi.db2.project.exceptions.ApplicationErrorException;
@@ -19,7 +18,6 @@ import it.polimi.db2.project.exceptions.InvalidInputArgumentException;
 import it.polimi.db2.project.exceptions.PermissionDeniedException;
 import it.polimi.db2.project.exceptions.ProductException;
 import it.polimi.db2.project.services.ProductAdminService;
-import it.polimi.db2.project.util.*;
 import it.polimi.db2.project.utils.ImageUtils;
 
 /**
