@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringEscapeUtils;
-
 import it.polimi.db2.project.exceptions.InvalidActionException;
 import it.polimi.db2.project.services.ProductAdminService;
 
