@@ -33,9 +33,28 @@
 						<td style="border-top: 1px solid black">
 							<table width = "100%">
 								<tr th:each="q, i : ${markAns}">
-									<td>
-										<p style="text-align: center" th:utext = "'Q' + ${i.index + 1} + ': ' + ${q.getQuestion().getQuestion().replaceAll('\r\n', '<br>')}"></p>
-										<p style="text-align: center" th:utext = "'Answer: ' + ${q.getAnswer().replaceAll('\r\n', '<br>')}"></p>
+									<td align="center">
+										<table>
+											<tr>
+												<td valign="top">
+													<span>Question <span th:text = "${i.index + 1}"></span>:</span>
+												</td>
+												<td>
+													<span th:utext = "${q.getQuestion().getQuestion().replaceAll('\r\n', '<br>')}"></span>
+												</td>
+											</tr>
+										</table>
+										<table>
+											<tr>
+												<td valign="top">
+													<span>Answer: </span>
+												</td>
+												<td>
+													<span th:utext = "${q.getAnswer().replaceAll('\r\n', '<br>')}"></span>
+												</td>
+											</tr>
+										</table>
+										<br>
 									</td>
 								</tr>
 							</table>
@@ -57,10 +76,7 @@
 									<td th:if="${statAns.getQ3() == 1}">Experience: low</td>
 									<td th:if="${statAns.getQ3() == 2}">Experience: medium</td>
 									<td th:if="${statAns.getQ3() == 3}">Experience: high</td>
-									<!-- <td th:text="'Experience: '+ ${r.getStatisticalAnswers().getQ3() == 0}? 'low' : '' +
-															   ${r.getStatisticalAnswers().getQ3() == 1}? 'medium' : '' + 
-															   ${r.getStatisticalAnswers().getQ3() == 2}? 'high' : ''"></td>
-								 --></tr>
+								</tr>
 							</table>
 						</td>
 					</tr>

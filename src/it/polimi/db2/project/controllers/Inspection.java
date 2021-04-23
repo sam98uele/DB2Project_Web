@@ -1,6 +1,7 @@
 package it.polimi.db2.project.controllers;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -68,6 +69,7 @@ public class Inspection extends HttpServlet {
 		//Set the past products
 		try {
 			ctx.setVariable("pastProd", prodSer.getPastScheduledProductOfTheDay());
+			ctx.setVariable("formatter", new SimpleDateFormat("dd/MM/yyyy"));
 		}catch(Exception e) {
 			// if there are problems in retrieving the product
 			// display a 500 error
