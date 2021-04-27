@@ -3,13 +3,13 @@
 <head>
 	<link rel="stylesheet" type="text/css" media="all" href="../css/style.css" th:href="@{/css/style.css}" />	
 	<meta charset="ISO-8859-1">
-	<title>Insert title here</title>
+	<title>Questionnaire</title>
 </head>
 <body>
 	<table width="100%">
 		<tr>
 			<td width="70%">
-				<h1>Statistical questions</h1>
+				<h1>Questionnaire - Statistical Section</h1>
 			</td>
 			<td width="30%" style="text-align: right">
 				<a th:href="@{/Logout}">Logout</a>
@@ -59,11 +59,11 @@
 					</tr>
 					</tbody>
 			</table>
-			<input type="Submit" name="submit" value="Submit the form">
+			<input type="Submit" name="submit" value="Submit">
 			<p th:text=" ${submitError}"  class="ErrorMessage"></p>
-			<input type="Submit" name="marketingQuestions" value="Return to marketing questions">
+			<input type="Submit" name="marketingQuestions" value="Previous">
 		</form>
-		<button th:onclick="'location.href=\'' + @{/DeleteQuestionnaire} + '\''" >Cancel all</button>
+		<button th:onclick="'location.href=\'' + @{/DeleteQuestionnaire} + '\''" >Cancel</button>
 	</fieldset>
 </body>
 </html>
