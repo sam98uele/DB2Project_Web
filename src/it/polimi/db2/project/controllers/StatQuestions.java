@@ -73,13 +73,14 @@ public class StatQuestions extends HttpServlet {
 		//Load the QuestionnaireResponseService statefull bean from the session
 		QuestionnaireResponseService qRespSer = (QuestionnaireResponseService) request.getSession().getAttribute("qRespSer");
 		
-		StatisticalAnswer statAns = new StatisticalAnswer();
-		
 		//Initialization of the page in case of error
 		String path = "/WEB-INF/StatQuestions.html";
 		ServletContext servletContext = getServletContext();
 		final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
 		boolean error = false;
+		Integer age = null;
+		Integer sex = null;
+		Integer level = null;
 		
 		//Read the age
 		try {
@@ -87,13 +88,10 @@ public class StatQuestions extends HttpServlet {
 			String ageString = StringEscapeUtils.escapeJava(request.getParameter("Age"));
 			if(ageString.equals("")) {
 				//Set the answer to null
-				statAns.setQ1(null);
+				age = null;
 			} else {
-				Integer age = Integer.parseInt(request.getParameter("Age"));
+				age = Integer.parseInt(request.getParameter("Age"));
 				if((age<18 || age>130)) throw new Exception();
-				
-				//Set the answer
-				statAns.setQ1(age);
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -104,14 +102,11 @@ public class StatQuestions extends HttpServlet {
 		
 		//Read the sex
 		try {
-			Integer sex = Integer.parseInt(request.getParameter("sex"));
+			sex = Integer.parseInt(request.getParameter("sex"));
 			if(sex<0 || sex>3) throw new Exception();
 			
 			//Set sex to null if equal to 0
 			if(sex == 0) sex=null;
-			
-			//Set the answer
-			statAns.setQ2(sex);
 		}catch(Exception e) {
 			//Input non valid, out of range or it is not a string
 			error = true;
@@ -120,14 +115,11 @@ public class StatQuestions extends HttpServlet {
 		
 		//Read the level
 		try {
-			Integer level = Integer.parseInt(request.getParameter("level"));
+			level = Integer.parseInt(request.getParameter("level"));
 			if(level<0 || level>3) throw new Exception();
 			
 			//Set level to null if equal to 0
 			if(level == 0) level=null;
-			
-			//Set answer
-			statAns.setQ3(level);
 		}catch(Exception e) {
 			//Input non valid, out of range or it is not a string
 			error = true;
@@ -136,7 +128,6 @@ public class StatQuestions extends HttpServlet {
 		
 		//If there is an error load the page with the errors
 		if(error) {
-			qRespSer.getResponse().setStatisticalAnswers(statAns);
 			ctx.setVariable("stat", qRespSer.getResponseStat());
 			templateEngine.process(path, ctx, response.getWriter());
 			return;
@@ -146,7 +137,7 @@ public class StatQuestions extends HttpServlet {
 		if(StringEscapeUtils.escapeJava(request.getParameter("submit")) != null) {
 			try {
 				//Submit the questionnaire, that can throw the following two exceptions
-				qRespSer.submit(statAns);
+				qRespSer.submit(age, sex, level);
 				
 				//Redirect to the home
 				response.sendRedirect(getServletContext().getContextPath() + "/Congratulations");
@@ -171,7 +162,7 @@ public class StatQuestions extends HttpServlet {
 			}
 		}else if(StringEscapeUtils.escapeJava(request.getParameter("marketingQuestions")) != null) {
 			//Call the method go to marketing section that will save the statistical answers
-			qRespSer.goToMarketingSection(statAns);
+			qRespSer.goToMarketingSection(age, sex, level);
 			
 			//Redirect to the Marketing section
 			response.sendRedirect(getServletContext().getContextPath() + "/Questionnaire");

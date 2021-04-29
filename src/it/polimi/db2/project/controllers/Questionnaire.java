@@ -1,7 +1,9 @@
 package it.polimi.db2.project.controllers;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -17,6 +19,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.project.entities.MarketingAnswer;
+import it.polimi.db2.project.entities.MarketingQuestion;
 import it.polimi.db2.project.entities.User;
 import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.exceptions.InvalidActionException;
@@ -94,29 +97,22 @@ public class Questionnaire extends HttpServlet {
 		//Load the QuestionnaireResponseService statefull bean from the session
 		QuestionnaireResponseService qRespSer = (QuestionnaireResponseService) request.getSession().getAttribute("qRespSer");
 		
+		Map<Integer,String> responses = new HashMap<>();
 		
-		List<MarketingAnswer> marketingAnswers = new IndirectList<>();
-		
+	
 		//Number of marketing questions in the questionnaire
 		int numQuestions = qRespSer.getProduct().getMarketingQuestions().size();
 		
 		//Read all the questions' form
 		for(Integer i = 0; i<numQuestions; i++) {
-			MarketingAnswer questResp = new MarketingAnswer();
-			
 			//Read the i-th form
 			String answ = request.getParameter("quest" + i.toString());
-			questResp.setAnswer(answ);
 			
-			//Append to the list the answer
-			marketingAnswers.add(questResp);
-			
-			//Set the marketing question to the marketing answer
-			questResp.setQuestion(qRespSer.getProduct().getMarketingQuestions().get(i));
+			responses.put(i, answ);
 		}
 		
 		//Set the marketing questions and go to the marketing answers.
-		qRespSer.goToStatisticalSection(marketingAnswers);
+		qRespSer.goToStatisticalSection(responses);
 		
 		response.sendRedirect(getServletContext().getContextPath() + "/StatQuestions");
 	}
