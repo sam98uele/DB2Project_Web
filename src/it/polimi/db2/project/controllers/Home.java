@@ -38,12 +38,6 @@ public class Home extends HttpServlet {
 	 */
 	@EJB(name = "it.polimi.db2.project.services/ProductUserService")
 	private ProductUserService prodUserSer;
-	
-	/**
-	 * UserService for the user
-	 */
-	@EJB(name = "it.polimi.db2.project.services/UserService")
-	private UserService userService;
 
        
     /**
@@ -106,7 +100,7 @@ public class Home extends HttpServlet {
 		// Load if the user already answered the questionnaire
 		boolean alreadyAnswered;
 		try {
-			alreadyAnswered = userService.answeredToQuestionnaireOfTheDay(user);
+			alreadyAnswered = prodUserSer.answeredToQuestionnaireOfTheDay(user);
 		}
 		catch (ApplicationErrorException e) {
 			// if there are some problems internal to the server
