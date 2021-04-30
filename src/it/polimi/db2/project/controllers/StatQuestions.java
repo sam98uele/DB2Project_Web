@@ -58,7 +58,7 @@ public class StatQuestions extends HttpServlet {
 			String path = "/WEB-INF/StatQuestions.html";
 			ServletContext servletContext = getServletContext();
 			final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-			ctx.setVariable("stat", qRespSer.getResponseStat());
+			ctx.setVariable("stat", qRespSer.getResponse().getStatisticalAnswers());
 			templateEngine.process(path, ctx, response.getWriter());
 		} else {
 			//This means that the questionnaire is not yet started (initialized)
@@ -128,7 +128,7 @@ public class StatQuestions extends HttpServlet {
 		
 		//If there is an error load the page with the errors
 		if(error) {
-			ctx.setVariable("stat", qRespSer.getResponseStat());
+			ctx.setVariable("stat", qRespSer.getResponse().getStatisticalAnswers());
 			templateEngine.process(path, ctx, response.getWriter());
 			return;
 		}
@@ -145,7 +145,7 @@ public class StatQuestions extends HttpServlet {
 			} catch (InvalidAnswerException e) {
 				//marketing answers are mandatory
 				//Load the error
-				ctx.setVariable("stat", qRespSer.getResponseStat());
+				ctx.setVariable("stat", qRespSer.getResponse().getStatisticalAnswers());
 				ctx.setVariable("submitError", e.getMessage());
 				templateEngine.process(path, ctx, response.getWriter());
 				return;
