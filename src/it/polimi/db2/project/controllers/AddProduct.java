@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.servlet.http.Part;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.exceptions.InvalidInputArgumentException;
 import it.polimi.db2.project.exceptions.PermissionDeniedException;
@@ -47,11 +49,11 @@ public class AddProduct extends HttpServlet {
 		
 		try {
 			//Read the name of the product from the form
-			name = request.getParameter("name").replaceAll("\r\n", " ");
+			name = StringEscapeUtils.escapeJava(request.getParameter("name"));
 			
 			//Read the description of the product from the form
 			//No backspace allowed
-			description = request.getParameter("description").replaceAll("\r\n", " ");
+			description = StringEscapeUtils.escapeJava(request.getParameter("description"));
 			
 			//Read the date
 			try {

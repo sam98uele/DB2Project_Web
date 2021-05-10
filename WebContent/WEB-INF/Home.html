@@ -24,12 +24,12 @@
 		<table width="100%">
 			<tr>
 				<td width="30%">
-					<h4 th:utext="'The product of the day is: ' + ${prodDay.getName()}"></h4>
+					<h4 th:text="'The product of the day is: ' + ${prodDay.getName()}"></h4>
 					<img alt="photo" width="100%" height="300px" style="object-fit: contain" th:src="*{'data:image/png;base64,'+ prodDay.getImageData()}">
 				</td>
 				<td width="70%">
 					<h4>Description of the product:</h4>
-					<p th:utext="${prodDay.getDescription()}"></p>
+					<p th:text="${prodDay.getDescription()}"></p>
 					<hr>
 					<div th:if="${prodDay!=null}">
 						<a th:href="@{/Questionnaire}" th:if="${!AlreadyAnsweres}">Answer the questions</a>
@@ -68,7 +68,7 @@
 													<span>Question <span th:text = "${i.index + 1}"></span>:</span>
 												</td>
 												<td>
-													<span th:utext = "${q.getQuestion().getQuestion().replaceAll('\r\n', '<br>')}"></span>
+													<span th:text = "${q.getQuestion().getQuestion()}"></span>
 												</td>
 											</tr>
 										</table>
@@ -78,7 +78,7 @@
 													<span>Answer: </span>
 												</td>
 												<td>
-													<span th:utext = "${q.getAnswer().replaceAll('\r\n', '<br>')}"></span>
+													<span th:text = "${q.getAnswer()}"></span>
 												</td>
 											</tr>
 										</table>

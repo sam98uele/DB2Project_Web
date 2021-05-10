@@ -2,7 +2,6 @@ package it.polimi.db2.project.controllers;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -12,14 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.eclipse.persistence.indirection.IndirectList;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.db2.project.entities.MarketingAnswer;
-import it.polimi.db2.project.entities.MarketingQuestion;
 import it.polimi.db2.project.entities.User;
 import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.exceptions.InvalidActionException;
@@ -48,7 +45,6 @@ public class Questionnaire extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
-		templateResolver.setCharacterEncoding("UTF-8");
 	}
 
 	/**
@@ -106,7 +102,7 @@ public class Questionnaire extends HttpServlet {
 		//Read all the questions' form
 		for(Integer i = 0; i<numQuestions; i++) {
 			//Read the i-th form
-			String answ = request.getParameter("quest" + i.toString());
+			String answ = StringEscapeUtils.escapeJava(request.getParameter("quest" + i.toString()));
 			
 			responses.put(i, answ);
 		}

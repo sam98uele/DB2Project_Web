@@ -15,7 +15,6 @@ import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
-import it.polimi.db2.project.entities.StatisticalAnswer;
 import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.exceptions.InvalidAnswerException;
 import it.polimi.db2.project.exceptions.ResponseException;
@@ -43,7 +42,6 @@ public class StatQuestions extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
-		templateResolver.setCharacterEncoding("UTF-8");
 	}
 
 	/**

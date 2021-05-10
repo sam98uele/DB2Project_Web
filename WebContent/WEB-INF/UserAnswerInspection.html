@@ -40,7 +40,7 @@
 													<span>Question <span th:text = "${i.index + 1}"></span>:</span>
 												</td>
 												<td>
-													<span th:utext = "${q.getQuestion().getQuestion().replaceAll('\r\n', '<br>')}"></span>
+													<span th:text = "${q.getQuestion().getQuestion()}"></span>
 												</td>
 											</tr>
 										</table>
@@ -50,7 +50,7 @@
 													<span>Answer: </span>
 												</td>
 												<td>
-													<span th:utext = "${q.getAnswer().replaceAll('\r\n', '<br>')}"></span>
+													<span th:text = "${q.getAnswer()}"></span>
 												</td>
 											</tr>
 										</table>

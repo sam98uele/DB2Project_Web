@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import it.polimi.db2.project.exceptions.ApplicationErrorException;
 import it.polimi.db2.project.exceptions.NoProductOfTheDayException;
 import it.polimi.db2.project.services.ProductUserService;
-import it.polimi.db2.project.services.UserService;
 import it.polimi.db2.project.entities.Product;
 import it.polimi.db2.project.entities.QuestionnaireResponse;
 import it.polimi.db2.project.entities.User;
@@ -58,7 +57,6 @@ public class Home extends HttpServlet {
 		this.templateEngine = new TemplateEngine();
 		this.templateEngine.setTemplateResolver(templateResolver);
 		templateResolver.setSuffix(".html");
-		templateResolver.setCharacterEncoding("UTF-8");
 	}
 
 	/**

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 import it.polimi.db2.project.exceptions.InvalidActionException;
 import it.polimi.db2.project.services.ProductAdminService;
 
@@ -33,7 +35,7 @@ public class AddQuestion extends HttpServlet {
 		String question;
 		try {
 			//Get the question from the request
-			question = request.getParameter("question");
+			question = StringEscapeUtils.escapeJava(request.getParameter("question"));
 			
 			//Check if the string is null or empty, if it is raise an exception
 			if(question == null || question.isEmpty()) {

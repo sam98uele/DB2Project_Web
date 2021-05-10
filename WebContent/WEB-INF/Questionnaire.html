@@ -31,7 +31,7 @@
 				<tbody>
 					<tr th:each="p,i : ${product.getMarketingQuestions()}">
 						<td><p th:text="${i.index+1}"></p></td>
-						<td><p th:utext="${p.getQuestion().replaceAll('\r\n', '<br>')}"></p>
+						<td><p th:text="${p.getQuestion()}"></p>
 							<textarea th:name="'quest' + ${i.index}" rows="2" cols="40" th:text="${response.getResponseMarketingById(i.index)}"></textarea>
 						</td>
 					</tr>
