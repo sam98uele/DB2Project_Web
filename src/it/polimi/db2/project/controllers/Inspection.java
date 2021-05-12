@@ -17,7 +17,6 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.db2.project.services.ProductService;
-import it.polimi.db2.project.services.QuestionnaireAdminService;
 
 /**
  * Servlet implementation class Inspection
@@ -26,13 +25,6 @@ import it.polimi.db2.project.services.QuestionnaireAdminService;
 public class Inspection extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private TemplateEngine templateEngine;
-	
-	/**
-	 * QuestionnaireAdminService EJB
-	 * Contains all the services to manage the questions Admin Side
-	 */
-	@EJB(name = "it.polimi.db2.project.services/QuestionnaireAdminService")
-	private QuestionnaireAdminService questAdminSer;
 	
 	/**
 	 * ProductService EJB
