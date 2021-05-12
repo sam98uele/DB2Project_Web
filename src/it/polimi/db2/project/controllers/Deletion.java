@@ -1,6 +1,7 @@
 package it.polimi.db2.project.controllers;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletContext;
@@ -94,6 +95,7 @@ public class Deletion extends HttpServlet {
 		try {
 			//Retrieve the list of all the past products
 			ctx.setVariable("pastProd", prodSer.getPastScheduledProductOfTheDay());
+			ctx.setVariable("formatter", new SimpleDateFormat("dd/MM/yyyy"));
 		}catch(Exception e) {
 			//e.printStackTrace();
 			//Handle all the other errors

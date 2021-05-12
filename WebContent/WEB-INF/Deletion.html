@@ -31,13 +31,13 @@
 					<th width="10%">Date</th>
 					<th width="14%">Name</th>
 					<th width="42%" style="text-align: left">Image</th>
-					<th width="10%" style="text-align: right">Inspect</th>
+					<th width="10%" style="text-align: right">Action</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="p,i : ${pastProd}">
 					<td th:text="${i.index}" style="text-align: center"></td>
-					<td th:text=${p.getDate()} style="text-align: center"></td>
+					<td th:text=${formatter.format(p.getDate())} style="text-align: center"></td>
 					<td th:text=${p.getName} style="text-align: center"></td>
 					<td style="text-align: left"><img alt="photo" height="60px" style="object-fit: contain" th:src="*{'data:image/png;base64,'+ p.getImageData()}"></td>
 					<td style="text-align: right"><a th:href="@{/Deletion(ID=${p.getId()})}">delete</a></td>
